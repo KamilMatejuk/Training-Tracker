@@ -1,38 +1,47 @@
 package com.example.trainingtracker.dbconnection
 
 import androidx.room.TypeConverter
+import com.example.trainingtracker.dbconnection.items.SerieItem
+import com.google.gson.Gson
 import java.sql.Date
-import java.sql.Time
 
 // todo - fix date saving, check time saving
 object Converters {
-    /** String -> Date */
     @TypeConverter
     @JvmStatic
-    fun toDate(dateString: String?): Date? {
+    fun stringToDate(dateString: String?): Date? {
         if (dateString == null) return null
         return Date.valueOf(dateString)
     }
 
-    /** Date -> String */
     @TypeConverter
     @JvmStatic
-    fun toDateString(date: Date?): String? {
+    fun dateToString(date: Date?): String? {
         return date?.toString()
     }
 
-    /** String -> Time */
     @TypeConverter
     @JvmStatic
-    fun toTime(timeString: String?): Time? {
-        if (timeString == null) return null
-        return Time.valueOf(timeString)
-    }
+    fun listOfFloatToJson(value: List<Float>?) = Gson().toJson(value)
 
-    /** Time -> String */
     @TypeConverter
     @JvmStatic
-    fun toTimeString(time: Time?): String? {
-        return time?.toString()
-    }
+    fun jsonToListOfFloat(value: String) = Gson().fromJson(value, Array<Float>::class.java).toList()
+
+    @TypeConverter
+    @JvmStatic
+    fun listOfDateToJson(value: List<Date>?) = Gson().toJson(value)
+
+    @TypeConverter
+    @JvmStatic
+    fun jsonToListOfDate(value: String) = Gson().fromJson(value, Array<Date>::class.java).toList()
+
+    @TypeConverter
+    @JvmStatic
+    fun listOfSerieItemToJson(value: List<SerieItem>?) = Gson().toJson(value)
+
+    @TypeConverter
+    @JvmStatic
+    fun jsonToListOfSerieItem(value: String) = Gson().fromJson(value, Array<SerieItem>::class.java).toList()
+
 }

@@ -3,7 +3,6 @@ package com.example.trainingtracker.activities
 import android.content.Intent
 import android.os.Bundle
 import android.util.DisplayMetrics
-import com.example.trainingtracker.choosetrainingplan.ChooseTrainingPlanActivity
 import com.example.trainingtracker.databinding.ActivityLoadingBinding
 import com.example.trainingtracker.dbconnection.Room
 
@@ -43,7 +42,7 @@ class LoadingActivity : ThemeChangingActivity() {
                 binding.progressBar.progress = i
                 Thread.sleep(20)
             }
-            val intent = Intent(this, ChooseTrainingPlanActivity::class.java)
+            val intent = Intent(this, ChoosePlanOrExerciseActivity::class.java)
             startActivity(intent)
             finish()
         }.start()

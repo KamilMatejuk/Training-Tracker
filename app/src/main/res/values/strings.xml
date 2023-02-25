@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Training Tracker</string>
     <string name="img_desc">Image description</string>
+
+    <string name="choose_exercise_from_training_plan">Choose exercise from training plan</string>
+    <string name="search_for_exercise">Search for exercise</string>
+    <string name="search">Search...</string>
 </resources>

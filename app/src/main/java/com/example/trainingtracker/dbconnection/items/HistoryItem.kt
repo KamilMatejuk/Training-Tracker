@@ -14,17 +14,17 @@ import java.sql.Date
  */
 @Entity(
     foreignKeys = [
-        ForeignKey(entity = TrainingExerciseItem::class,
+        ForeignKey(entity = ExerciseItem::class,
             parentColumns = ["id"],
-            childColumns = ["training_exercise_id"],
+            childColumns = ["exercise_id"],
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE)
     ]
 )
 data class HistoryItem(
     @PrimaryKey var id: Int,
-    @ColumnInfo(name = "training_exercise_id") var training_exercise_id: Int,
-    @ColumnInfo(name = "switched_exercise_id") var switched_exercise_id: String?,
+    @ColumnInfo(name = "exercise_id") var training_exercise_id: Int,
     @ColumnInfo(name = "date") var date: Date,
     @ColumnInfo(name = "notes") var notes: String,
+    @ColumnInfo(name = "series") var series: List<SerieItem>,
 )

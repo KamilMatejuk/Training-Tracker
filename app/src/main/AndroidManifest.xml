@@ -10,13 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TrainingTracker.Dark.NoActionBar">
         <activity
-            android:name=".exercise.ExerciseActivity"
+            android:name=".activities.SearchExerciseActivity"
             android:exported="false" />
         <activity
-            android:name=".choosetrainingexercise.ChooseTrainingExerciseActivity"
+            android:name=".activities.ChoosePlanOrExerciseActivity"
             android:exported="false" />
         <activity
-            android:name=".choosetrainingday.ChooseTrainingDayActivity"
+            android:name=".activities.ExerciseActivity"
             android:exported="false" />
         <activity
             android:name=".activities.LoadingActivity"
@@ -27,9 +27,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".choosetrainingplan.ChooseTrainingPlanActivity"
-            android:exported="true" />
     </application>
 
 </manifest>
