@@ -1,0 +1,68 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+<!-- Base application theme. -->
+<style name="Theme.TrainingTracker.Dark" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <item name="colorPrimary">@color/mint</item>
+    <item name="colorPrimaryVariant">@color/mint</item>
+    <item name="colorOnPrimary">@color/dark</item>
+    <item name="colorSecondary">@color/mint</item>
+    <item name="colorSecondaryVariant">@color/mint</item>
+    <item name="colorOnSecondary">@color/dark</item>
+    <item name="android:statusBarColor" tools:targetApi="l">@color/mint</item>
+    <item name="myBackgroundColor">@color/dark</item>
+    <item name="myBackgroundColorDarker">@color/dark2</item>
+    <item name="myForegroundColor">@color/light</item>
+    <item name="android:textColor">@color/light</item>
+    <item name="android:itemBackground">@color/dark2</item>
+</style>
+
+<style name="Theme.TrainingTracker.Light" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <item name="colorPrimary">@color/mint</item>
+    <item name="colorPrimaryVariant">@color/mint</item>
+    <item name="colorOnPrimary">@color/light</item>
+    <item name="colorSecondary">@color/mint</item>
+    <item name="colorSecondaryVariant">@color/mint</item>
+    <item name="colorOnSecondary">@color/light</item>
+    <item name="android:statusBarColor" tools:targetApi="l">@color/mint</item>
+    <item name="myBackgroundColor">@color/light</item>
+    <item name="myBackgroundColorDarker">@color/light2</item>
+    <item name="myForegroundColor">@color/dark</item>
+    <item name="android:textColor">@color/dark</item>
+    <item name="android:itemBackground">@color/light2</item>
+</style>
+
+<style name="Theme.TrainingTracker.Dark.NoActionBar" parent="Theme.TrainingTracker.Dark">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+</style>
+<style name="Theme.TrainingTracker.Light.NoActionBar" parent="Theme.TrainingTracker.Light">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+</style>
+
+<style name="Theme.TrainingTracker.Dark.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+<style name="Theme.TrainingTracker.Light.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+<style name="Theme.TrainingTracker.Dark.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+<style name="Theme.TrainingTracker.Light.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+<!-- transparent activity -->
+<style name="Theme.TrainingTracker.Dark.Transparent" parent="Theme.TrainingTracker.Dark.NoActionBar">
+    <item name="android:windowIsTranslucent">true</item>
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <item name="android:windowContentOverlay">@null</item>
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:backgroundDimEnabled">true</item>
+    <item name="colorPrimaryDark">@android:color/transparent</item>
+    <item name="android:statusBarColor" tools:targetApi="l">@android:color/transparent</item>
+</style>
+<style name="Theme.TrainingTracker.Light.Transparent" parent="Theme.TrainingTracker.Light.NoActionBar">
+    <item name="android:windowIsTranslucent">true</item>
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <item name="android:windowContentOverlay">@null</item>
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:backgroundDimEnabled">true</item>
+    <item name="colorPrimaryDark">@android:color/transparent</item>
+    <item name="android:statusBarColor" tools:targetApi="l">@android:color/transparent</item>
+</style>
+</resources>
