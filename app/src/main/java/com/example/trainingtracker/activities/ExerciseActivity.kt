@@ -1,7 +1,7 @@
 package com.example.trainingtracker.activities
 
 import android.annotation.SuppressLint
-import android.opengl.Visibility
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -15,16 +15,18 @@ import com.example.trainingtracker.dbconnection.items.ExerciseItem
 import com.example.trainingtracker.dbconnection.items.HistoryItem
 import com.example.trainingtracker.dbconnection.items.SerieItem
 import com.example.trainingtracker.fragments.CalendarDataViewModel
-import com.google.android.material.snackbar.Snackbar
 import java.time.LocalDate
 import java.time.Period
+
 
 class ExerciseActivity : ThemeChangingActivity() {
     private lateinit var binding: ActivityExerciseBinding
     private lateinit var exercise: ExerciseItem
     private lateinit var history: List<HistoryItem>
     private val viewModelData: CalendarDataViewModel by viewModels()
-    private var type: String = "reps"
+
+    private enum class MeasureType { REPS, TIME }
+    private var measureType: MeasureType = MeasureType.REPS
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,18 +37,24 @@ class ExerciseActivity : ThemeChangingActivity() {
 
         exercise = (intent.getSerializableExtra("EXTRA_EXERCISE") as? ExerciseItem)!!
 
-        binding.switchTypeReps.setOnClickListener { switchType("reps") }
-        binding.switchTypeTime.setOnClickListener { switchType("time") }
-        switchType("reps")
+        binding.switchTypeReps.setOnClickListener { switchMeasureType(MeasureType.REPS) }
+        binding.switchTypeTime.setOnClickListener { switchMeasureType(MeasureType.TIME) }
+        switchMeasureType(measureType)
 
-        binding.add.setOnClickListener { view ->
-            Snackbar.make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .show()
+        binding.add.setOnClickListener {
+            val intent = Intent(this, AddSerieActivity::class.java)
+            intent.putExtra("EXTRA_EXERCISE", exercise)
+            startActivity(intent)
         }
 
         loadExerciseData()
         loadExerciseHistory()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        finish()
+        startActivity(intent)
     }
 
     private fun loadExerciseData() {
@@ -87,8 +95,10 @@ class ExerciseActivity : ThemeChangingActivity() {
         if (!this::history.isInitialized) return
         val typeHistory = Tools.deepcopy(history).map { hi ->
             hi.series = hi.series.filter { si ->
-                if (type == "reps") si.reps != null && si.weight != null
-                else si.time != null && si.weight != null
+                when (measureType) {
+                    MeasureType.REPS -> si.reps != null && si.weight != null
+                    MeasureType.TIME -> si.time != null && si.weight != null
+                }
             }
             hi
         }.filter { hi -> hi.series.isNotEmpty() }
@@ -99,35 +109,34 @@ class ExerciseActivity : ThemeChangingActivity() {
         }
         var oneRepMax5 = "?"
         if (typeHistory.size >= 5) {
-            val maxes = (1..5).map { i -> oneRepMax(typeHistory[i].series) }
+            val maxes = (0..4).map { i -> oneRepMax(typeHistory[i].series) }
             oneRepMax5 = "${maxes.maxOf { it }} kg"
         }
-        if (type == "reps") {
-            binding.oneRepMaxLast1.visibility = View.VISIBLE
-            binding.oneRepMaxLast5.visibility = View.VISIBLE
-            binding.oneRepMaxLast1.text = "Estimated One Rep Max (last training): $oneRepMax1"
-            binding.oneRepMaxLast5.text = "Estimated One Rep Max (last 5 trainings): $oneRepMax5"
-        } else {
-            binding.oneRepMaxLast1.visibility = View.GONE
-            binding.oneRepMaxLast5.visibility = View.GONE
+        when (measureType) {
+            MeasureType.REPS -> {
+                binding.oneRepMaxLast1.visibility = View.VISIBLE
+                binding.oneRepMaxLast5.visibility = View.VISIBLE
+                binding.oneRepMaxLast1.text = "Estimated One Rep Max (last training): $oneRepMax1"
+                binding.oneRepMaxLast5.text = "Estimated One Rep Max (last 5 trainings): $oneRepMax5"
+            }
+            MeasureType.TIME -> {
+                binding.oneRepMaxLast1.visibility = View.GONE
+                binding.oneRepMaxLast5.visibility = View.GONE
+            }
         }
     }
 
-    private fun switchType(to: String) {
-        val colorAccent = ContextCompat.getColor(this, R.color.mint)
-        val colorBg = Tools.colorFromAttr(this, R.attr.myBackgroundColor)
-        if (to == "reps") {
-            binding.switchTypeReps.setTextColor(colorBg)
-            binding.switchTypeReps.setBackgroundColor(colorAccent)
-            binding.switchTypeTime.setTextColor(colorAccent)
-            binding.switchTypeTime.setBackgroundColor(colorBg)
-            type = "reps"
-        } else {
-            binding.switchTypeReps.setTextColor(colorAccent)
-            binding.switchTypeReps.setBackgroundColor(colorBg)
-            binding.switchTypeTime.setTextColor(colorBg)
-            binding.switchTypeTime.setBackgroundColor(colorAccent)
-            type = "time"
+    private fun switchMeasureType(to: MeasureType) {
+        measureType = to
+        when (to) {
+            MeasureType.REPS -> {
+                Tools.switchBtn(this, binding.switchTypeReps, true)
+                Tools.switchBtn(this, binding.switchTypeTime, false)
+            }
+            MeasureType.TIME -> {
+                Tools.switchBtn(this, binding.switchTypeReps, false)
+                Tools.switchBtn(this, binding.switchTypeTime, true)
+            }
         }
         reloadVolume()
     }

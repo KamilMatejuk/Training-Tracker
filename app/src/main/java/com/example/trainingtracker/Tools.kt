@@ -2,6 +2,8 @@ package com.example.trainingtracker
 
 import android.content.Context
 import android.util.TypedValue
+import android.widget.Button
+import androidx.core.content.ContextCompat
 import com.example.trainingtracker.dbconnection.items.HistoryItem
 
 object Tools {
@@ -17,6 +19,18 @@ object Tools {
         return items.map { hi ->
             val item = hi.copy(series = hi.series.map { it.copy() })
             item
+        }
+    }
+
+    fun switchBtn(context: Context, btn: Button, on: Boolean) {
+        val colorAccent = ContextCompat.getColor(context, R.color.mint)
+        val colorBg = colorFromAttr(context, R.attr.myBackgroundColor)
+        if (on) {
+            btn.setTextColor(colorBg)
+            btn.setBackgroundColor(colorAccent)
+        } else {
+            btn.setTextColor(colorAccent)
+            btn.setBackgroundColor(colorBg)
         }
     }
 }

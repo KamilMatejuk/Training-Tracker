@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.EditExerciseActivity"
+    android:id="@+id/layout"
+    android:background="?attr/myBackgroundColor"
+    android:padding="16dp"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/warmup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mark as warmup"
+        android:textColor="?attr/myForegroundColor" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/switch_weight_free"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:text="Free\nweight"
+            android:textSize="10sp"
+            android:stateListAnimator="@null" />
+
+        <Button
+            android:id="@+id/switch_weight_body"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:text="Body\nweight"
+            android:textSize="10sp"
+            android:stateListAnimator="@null" />
+
+        <Button
+            android:id="@+id/switch_weight_both"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1.5"
+            android:text="Body weight +\nfree weight"
+            android:textSize="10sp"
+            android:stateListAnimator="@null" />
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="Weight [kg]"
+            android:textColor="?attr/myForegroundColor"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:height="48dp"
+            android:textColor="?attr/myForegroundColor"
+            android:textColorHint="?attr/myForegroundColor"
+            android:backgroundTint="?attr/myForegroundColor"
+            android:autofillHints=""
+            android:padding="16dp"
+            android:inputType="numberDecimal"
+            tools:ignore="LabelFor" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/switch_type_reps"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="For reps"
+            android:textSize="10sp"
+            android:stateListAnimator="@null" />
+
+        <Button
+            android:id="@+id/switch_type_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="For time"
+            android:textSize="10sp"
+            android:stateListAnimator="@null" />
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/time_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="Time [s]"
+            android:textColor="?attr/myForegroundColor"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:height="48dp"
+            android:textColor="?attr/myForegroundColor"
+            android:textColorHint="?attr/myForegroundColor"
+            android:backgroundTint="?attr/myForegroundColor"
+            android:autofillHints=""
+            android:padding="16dp"
+            android:inputType="number"
+            tools:ignore="LabelFor" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/reps_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="Reps"
+            android:textColor="?attr/myForegroundColor"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/reps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:height="48dp"
+            android:textColor="?attr/myForegroundColor"
+            android:textColorHint="?attr/myForegroundColor"
+            android:backgroundTint="?attr/myForegroundColor"
+            android:autofillHints=""
+            android:padding="16dp"
+            android:inputType="number"
+            tools:ignore="LabelFor" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SAVE"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

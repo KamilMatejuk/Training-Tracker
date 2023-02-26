@@ -22,6 +22,9 @@
             android:name=".activities.ExerciseActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.AddSerieActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.LoadingActivity"
             android:exported="true">
             <intent-filter>
