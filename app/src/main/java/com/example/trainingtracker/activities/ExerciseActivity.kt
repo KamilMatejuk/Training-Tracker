@@ -8,6 +8,7 @@ import com.example.trainingtracker.adapters.VolumeGraphAdapter
 import com.example.trainingtracker.databinding.ActivityExerciseBinding
 import com.example.trainingtracker.dbconnection.Room
 import com.example.trainingtracker.dbconnection.items.ExerciseItem
+import com.example.trainingtracker.dbconnection.items.SerieItem
 import com.example.trainingtracker.fragments.CalendarDataViewModel
 import java.time.Duration
 import java.time.LocalDate
@@ -47,7 +48,7 @@ class ExerciseActivity : ThemeChangingActivity() {
     private fun loadExerciseHistory() {
         Thread {
             run {
-                val history = exercise.id?.let { Room.getExerciseHistory(it) } ?: listOf()
+                val history = (exercise.id?.let { Room.getExerciseHistory(it) } ?: listOf()).sortedBy { it.date }.reversed()
                 // frequency
                 val dates = history.map { LocalDate.of(it.date.year, it.date.month, it.date.dayOfMonth) }
                 viewModelData.setData(dates)
@@ -59,8 +60,28 @@ class ExerciseActivity : ThemeChangingActivity() {
                 binding.trainedMonth.text = "Trained in last 31 days: $dates31"
                 binding.trainedYear.text = "Trained in last 365 days: $dates365"
                 // volume
-                binding.volumeGraph.adapter = VolumeGraphAdapter(history.sortedBy { it.date }.reversed(), this)
+                binding.volumeGraph.adapter = VolumeGraphAdapter(history, this)
+                var oneRepMax1 = "?"
+                if (history.size >= 1) {
+                    oneRepMax1 = "${oneRepMax(history[0].series)} kg"
+                }
+                var oneRepMax5 = "?"
+                if (history.size >= 5) {
+                    val maxes = (1..5).map { i -> oneRepMax(history[i].series) }
+                    oneRepMax5 = "${maxes.maxOf { it }} kg"
+                }
+                binding.oneRepMaxLast1.text = "Estimated One Rep Max (last training): $oneRepMax1"
+                binding.oneRepMaxLast5.text = "Estimated One Rep Max (last 5 trainings): $oneRepMax5"
             }
         }.start()
+    }
+
+    private fun oneRepMax(items: List<SerieItem>): Float {
+        // The Brzycki Equation
+        return items.map {
+            if (it.reps != null && it.weight != null) {
+                it.weight!! / (1.0278f - (0.0278f * it.reps!!))
+            } else 0f
+        }.maxOf { it }
     }
 }
