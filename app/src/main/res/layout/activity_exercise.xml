@@ -72,9 +72,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:layout="@layout/fragment_calendar" />
 
-    <!-- todo add time or weight switch for graph and one-rep-max-->
-    <!-- todo show one-rep-max only for weight, not time -->
-
     <TextView
         android:id="@+id/volume"
         android:layout_width="match_parent"
@@ -84,6 +81,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frequency_graph" />
 
+    <LinearLayout
+        android:id="@+id/type_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/volume">
+        
+        <Button
+            android:id="@+id/switch_type_reps"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Show repped"
+            android:stateListAnimator="@null" />
+
+        <Button
+            android:id="@+id/switch_type_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Show timed"
+            android:stateListAnimator="@null" />
+
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/volume_graph"
         android:layout_width="match_parent"
@@ -92,7 +118,7 @@
         app:layoutManager="LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/volume" />
+        app:layout_constraintTop_toBottomOf="@+id/type_switch" />
 
     <TextView
         android:id="@+id/one_rep_max_last1"
@@ -111,5 +137,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/one_rep_max_last1" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/img_desc"
+        android:src="@android:drawable/ic_input_add"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,8 +2,6 @@ package com.example.trainingtracker.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.core.content.ContextCompat
 import com.example.trainingtracker.databinding.ActivityEditExerciseBinding
 import com.example.trainingtracker.dbconnection.Room
 import com.example.trainingtracker.dbconnection.items.ExerciseItem
