@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
+import com.example.trainingtracker.adapters.VolumeGraphAdapter
 import com.example.trainingtracker.databinding.ActivityExerciseBinding
 import com.example.trainingtracker.dbconnection.Room
 import com.example.trainingtracker.dbconnection.items.ExerciseItem
@@ -46,10 +47,10 @@ class ExerciseActivity : ThemeChangingActivity() {
     private fun loadExerciseHistory() {
         Thread {
             run {
-                val history = exercise.id?.let { Room.getExerciseHistory(it) }
-                val dates = history?.map { LocalDate.of(it.date.year, it.date.month, it.date.dayOfMonth) } ?: listOf()
+                val history = exercise.id?.let { Room.getExerciseHistory(it) } ?: listOf()
+                // frequency
+                val dates = history.map { LocalDate.of(it.date.year, it.date.month, it.date.dayOfMonth) }
                 viewModelData.setData(dates)
-
                 val now = LocalDate.now()
                 val dates7 = dates.filter { now.minus(Period.ofDays(7)) < it }.size
                 val dates31 = dates.filter { now.minus(Period.ofDays(31)) < it }.size
@@ -57,6 +58,8 @@ class ExerciseActivity : ThemeChangingActivity() {
                 binding.trainedWeek.text = "Trained in last 7 days: $dates7"
                 binding.trainedMonth.text = "Trained in last 31 days: $dates31"
                 binding.trainedYear.text = "Trained in last 365 days: $dates365"
+                // volume
+                binding.volumeGraph.adapter = VolumeGraphAdapter(history.sortedBy { it.date }.reversed(), this)
             }
         }.start()
     }

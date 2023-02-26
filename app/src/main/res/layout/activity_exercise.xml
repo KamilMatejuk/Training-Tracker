@@ -82,6 +82,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frequency_graph" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/volume_graph"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        app:layoutManager="LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/volume" />
+
 <!-- wykres volume w skali miesiąca (wykres słupkowy w pionie - słupki poziomo, po kliknięciu popup z danymi: serie, kilogramy itd) -->
 <!-- estimated one-rep-max -->
 </androidx.constraintlayout.widget.ConstraintLayout>
