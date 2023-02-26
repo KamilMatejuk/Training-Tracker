@@ -1,13 +1,21 @@
 package com.example.trainingtracker.activities
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.viewModels
 import com.example.trainingtracker.databinding.ActivityExerciseBinding
+import com.example.trainingtracker.dbconnection.Room
 import com.example.trainingtracker.dbconnection.items.ExerciseItem
+import com.example.trainingtracker.fragments.CalendarDataViewModel
+import java.time.Duration
+import java.time.LocalDate
+import java.time.Period
 
-class ExerciseActivity : AppCompatActivity() {
+class ExerciseActivity : ThemeChangingActivity() {
     private lateinit var binding: ActivityExerciseBinding
+    private lateinit var exercise: ExerciseItem
+    private val viewModelData: CalendarDataViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,39 +24,40 @@ class ExerciseActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        val exercise = intent.getSerializableExtra("EXTRA_EXERCISE") as? ExerciseItem
-        Log.d("EXERCISE", exercise.toString())
+        exercise = (intent.getSerializableExtra("EXTRA_EXERCISE") as? ExerciseItem)!!
 
-
-//        loadExerciseData()
-//        loadExerciseHistory()
+        loadExerciseData()
+        loadExerciseHistory()
     }
 
-//    @SuppressLint("SetTextI18n")
-//    private fun loadExerciseData() {
-//        Thread {
-//            run {
-//                val data = Room.getExerciseData(exerciseId)
-//                binding.name.text = "Name: ${data.name}"
-//                binding.description.text = "Description: ${data.description}"
-////                Log.d("Exercise data", data.toString())
-//            }
-//        }.start()
-//    }
-//
-//    private fun loadExerciseHistory() {
-//        Thread {
-//            run {
-//                val history = Room.getHistory(trainingExerciseId)
-////                Log.d("Exercise history", history.toString())
-//                var text = ""
-//                history.forEach { (hist, series) ->
-//                    text += "On ${hist.date} done series: \n"
-//                    series.forEach { s -> text += " * ${s.reps} x ${s.weight_kg} kg\n" }
-//                    text += "saved notes: '${hist.notes}'\n\n"
-//                }
-//                binding.history.text = text
-//            }
-//        }.start()
-//    }
+    @SuppressLint("SetTextI18n")
+    private fun loadExerciseData() {
+        Thread {
+            run {
+                val data = exercise.id?.let { Room.getExercise(it) }
+                binding.name.text = data?.name
+                binding.description.text = data?.description
+                Log.d("Exercise data", data.toString())
+            }
+        }.start()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun loadExerciseHistory() {
+        Thread {
+            run {
+                val history = exercise.id?.let { Room.getExerciseHistory(it) }
+                val dates = history?.map { LocalDate.of(it.date.year, it.date.month, it.date.dayOfMonth) } ?: listOf()
+                viewModelData.setData(dates)
+
+                val now = LocalDate.now()
+                val dates7 = dates.filter { now.minus(Period.ofDays(7)) < it }.size
+                val dates31 = dates.filter { now.minus(Period.ofDays(31)) < it }.size
+                val dates365 = dates.filter { now.minus(Period.ofDays(365)) < it }.size
+                binding.trainedWeek.text = "Trained in last 7 days: $dates7"
+                binding.trainedMonth.text = "Trained in last 31 days: $dates31"
+                binding.trainedYear.text = "Trained in last 365 days: $dates365"
+            }
+        }.start()
+    }
 }

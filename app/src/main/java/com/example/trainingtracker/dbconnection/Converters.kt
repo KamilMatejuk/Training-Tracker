@@ -4,6 +4,7 @@ import androidx.room.TypeConverter
 import com.example.trainingtracker.dbconnection.items.SerieItem
 import com.google.gson.Gson
 import java.sql.Date
+import java.time.LocalDateTime
 
 // todo - fix date saving, check time saving
 object Converters {
@@ -16,7 +17,20 @@ object Converters {
 
     @TypeConverter
     @JvmStatic
-    fun dateToString(date: Date?): String? {
+    fun dateToString(date: LocalDateTime?): String? {
+        return date?.toString()
+    }
+
+    @TypeConverter
+    @JvmStatic
+    fun stringToLocalDateTime(dateString: String?): LocalDateTime? {
+        if (dateString == null) return null
+        return LocalDateTime.parse(dateString)
+    }
+
+    @TypeConverter
+    @JvmStatic
+    fun localDateTimeToString(date: Date?): String? {
         return date?.toString()
     }
 

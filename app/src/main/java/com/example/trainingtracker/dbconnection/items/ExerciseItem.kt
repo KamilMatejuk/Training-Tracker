@@ -14,7 +14,7 @@ import java.io.Serializable
  */
 @Entity
 data class ExerciseItem(
-    @PrimaryKey var id: Int,
+    @PrimaryKey(autoGenerate = true) var id: Int?,
     @ColumnInfo(name = "name") var name: String,
     @ColumnInfo(name = "description") var description: String?,
     @ColumnInfo(name = "image") var image: String?,

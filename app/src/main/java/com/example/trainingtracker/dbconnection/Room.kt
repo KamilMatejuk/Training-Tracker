@@ -7,12 +7,13 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.trainingtracker.dbconnection.items.*
 import java.sql.Date
+import java.time.LocalDateTime
 
 
 @Database(entities = [
     UserItem::class,
     ExerciseItem::class,
-    HistoryItem::class], version = 3)
+    HistoryItem::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun Dao(): DAO
@@ -42,28 +43,28 @@ object Room {
 //        db.insertTrainingDayItem(TrainingDayItem(2, 1, "Pull", 2))
 //        db.insertTrainingDayItem(TrainingDayItem(3, 1, "Legs", 3))
         // exercises
-        db.insertExerciseItem(ExerciseItem(1, "Wyciskanie na ławeczce poziomej", "", null, null, null))
-        db.insertExerciseItem(ExerciseItem(2, "Rozpiętki na ławeczce dodatniej", "", null, null, null))
-        db.insertExerciseItem(ExerciseItem(3, "Rozpiętki w bramie, wyciąg na górze", "", null, null, null))
-        db.insertExerciseItem(ExerciseItem(4, "Rozpiętki w bramie, wyciąg po środku", "", null, null, null))
-        db.insertExerciseItem(ExerciseItem(5, "Rozpiętki w bramie, wyciąg na dole", "", null, null, null))
-        db.insertExerciseItem(ExerciseItem(6, "Dipy", "", null, null, null))
-        db.insertExerciseItem(ExerciseItem(7, "Wyciskanie żołnierskie", "", null, null, null))
-        db.insertExerciseItem(ExerciseItem(8, "Unoszenie rąk na boki z hantlami", "", null, null, null))
-        db.insertExerciseItem(ExerciseItem(9, "Prostowanie ramion na wyciągu", "", null, null, null))
-        db.insertExerciseItem(ExerciseItem(10, "Martwy ciąg", "", null, null, null))
-        db.insertExerciseItem(ExerciseItem(11, "Wiosłowanie końcem sztangi", "", null, null, null))
-        db.insertExerciseItem(ExerciseItem(12, "Podciąganie", "", null, null, null))
-        db.insertExerciseItem(ExerciseItem(13, "Przyciąganie linki wyciągu górnego, siedząc, wąski chwyt", "", null, null, null))
-        db.insertExerciseItem(ExerciseItem(14, "Odwrotne rozpiętki na maszynie", "", null, null, null))
-        db.insertExerciseItem(ExerciseItem(15, "Szrugsy", "", null, null, null))
-        db.insertExerciseItem(ExerciseItem(16, "Uginannie rąk ze sztangą na modlitewniku", "", null, null, null))
-        db.insertExerciseItem(ExerciseItem(17, "Przysiady", "", null, null, null))
-        db.insertExerciseItem(ExerciseItem(18, "Wykroki", "", null, null, null))
-        db.insertExerciseItem(ExerciseItem(19, "Prostowanie nóg na maszynie", "", null, null, null))
-        db.insertExerciseItem(ExerciseItem(20, "Zginanie nóg na maszynie", "", null, null, null))
-        db.insertExerciseItem(ExerciseItem(21, "Wspięcia na palce", "", null, null, null))
-        db.insertExerciseItem(ExerciseItem(22, "Wzniosy nóg wisząc na drążku", "", null, null, null))
+        db.insertExerciseItem(ExerciseItem(null, "Wyciskanie na ławeczce poziomej", "", null, null, null))
+        db.insertExerciseItem(ExerciseItem(null, "Rozpiętki na ławeczce dodatniej", "", null, null, null))
+        db.insertExerciseItem(ExerciseItem(null, "Rozpiętki w bramie, wyciąg na górze", "", null, null, null))
+        db.insertExerciseItem(ExerciseItem(null, "Rozpiętki w bramie, wyciąg po środku", "", null, null, null))
+        db.insertExerciseItem(ExerciseItem(null, "Rozpiętki w bramie, wyciąg na dole", "", null, null, null))
+        db.insertExerciseItem(ExerciseItem(null, "Dipy", "", null, null, null))
+        db.insertExerciseItem(ExerciseItem(null, "Wyciskanie żołnierskie", "", null, null, null))
+        db.insertExerciseItem(ExerciseItem(null, "Unoszenie rąk na boki z hantlami", "", null, null, null))
+        db.insertExerciseItem(ExerciseItem(null, "Prostowanie ramion na wyciągu", "", null, null, null))
+        db.insertExerciseItem(ExerciseItem(null, "Martwy ciąg", "", null, null, null))
+        db.insertExerciseItem(ExerciseItem(null, "Wiosłowanie końcem sztangi", "", null, null, null))
+        db.insertExerciseItem(ExerciseItem(null, "Podciąganie", "", null, null, null))
+        db.insertExerciseItem(ExerciseItem(null, "Przyciąganie linki wyciągu górnego, siedząc, wąski chwyt", "", null, null, null))
+        db.insertExerciseItem(ExerciseItem(null, "Odwrotne rozpiętki na maszynie", "", null, null, null))
+        db.insertExerciseItem(ExerciseItem(null, "Szrugsy", "", null, null, null))
+        db.insertExerciseItem(ExerciseItem(null, "Uginannie rąk ze sztangą na modlitewniku", "", null, null, null))
+        db.insertExerciseItem(ExerciseItem(null, "Przysiady", "", null, null, null))
+        db.insertExerciseItem(ExerciseItem(null, "Wykroki", "", null, null, null))
+        db.insertExerciseItem(ExerciseItem(null, "Prostowanie nóg na maszynie", "", null, null, null))
+        db.insertExerciseItem(ExerciseItem(null, "Zginanie nóg na maszynie", "", null, null, null))
+        db.insertExerciseItem(ExerciseItem(null, "Wspięcia na palce", "", null, null, null))
+        db.insertExerciseItem(ExerciseItem(null, "Wzniosy nóg wisząc na drążku", "", null, null, null))
 //        // exercises in training
 //        // push
 //        db.insertTrainingExerciseItem(TrainingExerciseItem(1, 1, "1", 1, "4x8"))
@@ -91,7 +92,24 @@ object Room {
 //        db.insertTrainingExerciseItem(TrainingExerciseItem(21, 3, "21", 5, "3x10"))
 //        db.insertTrainingExerciseItem(TrainingExerciseItem(22, 3, "22", 6, "3x10"))
 //        // history
-//        db.insertHistoryItem(HistoryItem(1, 1, null, Date.valueOf("2022-04-16"), ""))
+        db.insertHistoryItem(HistoryItem(null, 1, LocalDateTime.of(2023, 2, 19, 23, 16), "", listOf(
+            SerieItem(null, null, 20.0f, 5, "", true, WeightType.FREEWEIGHT),
+            SerieItem(null, null, 40.0f, 5, "", false, WeightType.FREEWEIGHT),
+            SerieItem(null, null, 40.0f, 5, "", false, WeightType.FREEWEIGHT),
+            SerieItem(null, null, 50.0f, 5, "", false, WeightType.FREEWEIGHT),
+        )))
+        db.insertHistoryItem(HistoryItem(null, 1, LocalDateTime.of(2023, 2, 22, 22, 18), "", listOf(
+            SerieItem(null, null, 20.0f, 5, "", true, WeightType.FREEWEIGHT),
+            SerieItem(null, null, 40.0f, 5, "", false, WeightType.FREEWEIGHT),
+            SerieItem(null, null, 50.0f, 5, "", false, WeightType.FREEWEIGHT),
+            SerieItem(null, null, 60.0f, 5, "", false, WeightType.FREEWEIGHT),
+        )))
+        db.insertHistoryItem(HistoryItem(null, 1, LocalDateTime.of(2023, 2, 24, 19, 55), "", listOf(
+            SerieItem(null, null, 20.0f, 5, "", true, WeightType.FREEWEIGHT),
+            SerieItem(null, null, 40.0f, 5, "", false, WeightType.FREEWEIGHT),
+            SerieItem(null, null, 50.0f, 5, "", false, WeightType.FREEWEIGHT),
+            SerieItem(null, null, 65.0f, 5, "", false, WeightType.FREEWEIGHT),
+        )))
 //        db.insertSerieItem(SerieItem(1, 1, Time(15, 55, 0), 60f, 132f, 6, "", false, WeightType.FREE_WEIGHT))
 //        db.insertSerieItem(SerieItem(2, 1, Time(15, 57, 0), 60f, 132f, 8, "", false, WeightType.FREE_WEIGHT))
 //        db.insertSerieItem(SerieItem(3, 1, Time(15, 58, 9), 60f, 132f, 7, "", false, WeightType.FREE_WEIGHT))
@@ -108,8 +126,10 @@ object Room {
 //    fun getTrainingPlans(): List<TrainingPlan> = db.getTrainingPlans()
 //    fun getTrainingDays(training_plan_id: Int): List<TrainingDay> = db.getTrainingDays(training_plan_id)
 //    fun getTrainingExercises(training_day_id: Int): List<TrainingExercise> = db.getTrainingExercises(training_day_id)
-//    fun getExerciseData(exercise_id: Int): ExerciseItem = db.getExerciseData(exercise_id)
 //    fun getHistory(training_exercise_id: Int): List<HistoryAndSeries> = db.getHistory(training_exercise_id)
 
     fun getAllExerciseItems(): List<ExerciseItem> = db.getAllExerciseItems()
+    fun getExercise(exercise_id: Int): ExerciseItem = db.getExerciseData(exercise_id)
+    fun addExercise(item: ExerciseItem) = db.insertExerciseItem(item)
+    fun getExerciseHistory(exercise_id: Int): List<HistoryItem> = db.getExerciseHistory(exercise_id)
 }

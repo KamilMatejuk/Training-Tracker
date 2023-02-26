@@ -16,7 +16,7 @@ import java.sql.Date
  */
 @Entity
 data class UserItem(
-    @PrimaryKey var id: Int?,
+    @PrimaryKey(autoGenerate = true) var id: Int?,
     @ColumnInfo(name = "username") var username: String,
     @ColumnInfo(name = "height") var height: Float,
     @ColumnInfo(name = "weight_values") var weight_values: List<Float>,

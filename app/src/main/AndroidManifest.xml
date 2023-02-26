@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TrainingTracker.Dark.NoActionBar">
         <activity
+            android:name=".activities.EditExerciseActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.SearchExerciseActivity"
             android:exported="false" />
         <activity

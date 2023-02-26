@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trainingtracker.R
+import com.example.trainingtracker.activities.EditExerciseActivity
 import com.example.trainingtracker.activities.ExerciseActivity
 import com.example.trainingtracker.dbconnection.items.ExerciseItem
 import java.util.*
@@ -30,9 +31,11 @@ class SearchExerciseAdapter(
         @SuppressLint("SetTextI18n")
         fun bind(item: ExerciseItem) {
             if (search.isNotEmpty()) {
-                val startIdx = item.name.lowercase(Locale.getDefault()).indexOf(search)
+                val text = if (item.id == -1) "Create new: " + item.name else item.name
+                val start = if (item.id == -1) 12 else 0
+                val startIdx = text.indexOf(search, start, true)
                 val endIdx = startIdx + search.length
-                val spannable = SpannableString(item.name)
+                val spannable = SpannableString(text)
                 val color = ContextCompat.getColor(context, R.color.mint)
                 spannable.setSpan(ForegroundColorSpan(color), startIdx, endIdx, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                 v.findViewById<TextView>(R.id.name).text = spannable
@@ -40,7 +43,8 @@ class SearchExerciseAdapter(
                 v.findViewById<TextView>(R.id.name).text = item.name
             }
             v.setOnClickListener {
-                val intent = Intent(context, ExerciseActivity::class.java)
+                val cls = if (item.id == -1) EditExerciseActivity::class.java else ExerciseActivity::class.java
+                val intent = Intent(context, cls)
                 intent.putExtra("EXTRA_EXERCISE", item)
                 ContextCompat.startActivity(context, intent, null)
             }

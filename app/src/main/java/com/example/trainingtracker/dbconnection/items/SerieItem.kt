@@ -3,7 +3,6 @@ package com.example.trainingtracker.dbconnection.items
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.sql.Time
 
 /**
  * Data class containing information about history from a single day
@@ -18,11 +17,11 @@ import java.sql.Time
  */
 @Entity
 data class SerieItem(
-    @PrimaryKey var id: Int,
-    @ColumnInfo(name = "time") var time: Time,
-    @ColumnInfo(name = "weight") var weight: Float,
-    @ColumnInfo(name = "reps") var reps: Int,
-    @ColumnInfo(name = "notes") var notes: String,
+    @PrimaryKey(autoGenerate = true) var id: Int?,
+    @ColumnInfo(name = "time") var time: Int?,
+    @ColumnInfo(name = "weight") var weight: Float?,
+    @ColumnInfo(name = "reps") var reps: Int?,
+    @ColumnInfo(name = "notes") var notes: String?,
     @ColumnInfo(name = "warmup") var warmup: Boolean,
     @ColumnInfo(name = "weight_type") var weight_type: WeightType,
 )

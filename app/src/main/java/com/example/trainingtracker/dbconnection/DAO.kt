@@ -30,6 +30,12 @@ interface DAO {
     ***********************************************************************************************/
     @Query("SELECT * FROM exerciseitem") fun getAllExerciseItems(): List<ExerciseItem>
     @Insert fun insertExerciseItem(item: ExerciseItem)
+    @Query("SELECT * FROM exerciseitem WHERE id = :exercise_id")
+    fun getExerciseData(exercise_id: Int): ExerciseItem
+
+    @Query("SELECT * FROM historyitem WHERE exercise_id = :exercise_id")
+    fun getExerciseHistory(exercise_id: Int): List<HistoryItem>
+    @Insert fun insertHistoryItem(item: HistoryItem)
 
 
 //    @Query("SELECT * FROM historyitem") fun getAllHistoryItems(): List<HistoryItem>
@@ -79,9 +85,6 @@ interface DAO {
 //            "WHERE trainingexerciseitem.training_day_id = :training_day_id " +
 //            "ORDER BY trainingexerciseitem.orders ASC")
 //    fun getTrainingExercises(training_day_id: Int): List<TrainingExercise>
-//
-//    @Query("SELECT * FROM exerciseitem WHERE id = :exercise_id")
-//    fun getExerciseData(exercise_id: Int): ExerciseItem
 //
 //    @Transaction
 //    @Query("SELECT * FROM historyitem WHERE training_exercise_id = :training_exercise_id")
