@@ -19,7 +19,6 @@ interface DAO {
      ******************************************** USER *********************************************
      ***********************************************************************************************/
     @Query("SELECT * FROM useritem") fun getAllUserItems(): List<UserItem>
-    fun getUser(): UserItem = getAllUserItems()[0]
     @Insert fun addUser(item: UserItem)
     // todo
     // edit user

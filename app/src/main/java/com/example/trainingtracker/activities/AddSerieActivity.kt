@@ -88,6 +88,10 @@ class AddSerieActivity : ThemeChangingActivity() {
                 binding.weight.isEnabled = true
             }
             WeightType.BODYWEIGHT -> {
+                if (bodyWeight <= 0) {
+                    Toast.makeText(this, "Body weight is not set", Toast.LENGTH_SHORT).show()
+                    return
+                }
                 // switch buttons
                 Tools.switchBtn(this, binding.switchWeightFree, false)
                 Tools.switchBtn(this, binding.switchWeightBody, true)
@@ -97,6 +101,10 @@ class AddSerieActivity : ThemeChangingActivity() {
                 binding.weight.setText("")
             }
             WeightType.WEIGHTED_BODYWEIGHT -> {
+                if (bodyWeight <= 0) {
+                    Toast.makeText(this, "Body weight is not set", Toast.LENGTH_SHORT).show()
+                    return
+                }
                 // switch buttons
                 Tools.switchBtn(this, binding.switchWeightFree, false)
                 Tools.switchBtn(this, binding.switchWeightBody, false)
@@ -111,7 +119,7 @@ class AddSerieActivity : ThemeChangingActivity() {
         Thread {
             run {
                 val user = Room.getUser()
-                bodyWeight = user.weight_values.last()
+                bodyWeight = user?.weight_values?.lastOrNull() ?: 0f
             }
         }.start()
     }

@@ -132,7 +132,7 @@ object Room {
     fun getExercise(exercise_id: Int): ExerciseItem = db.getExerciseData(exercise_id)
     fun addExercise(item: ExerciseItem) = db.insertExerciseItem(item)
     fun getExerciseHistory(exercise_id: Int): List<HistoryItem> = db.getExerciseHistory(exercise_id)
-    fun getUser(): UserItem = db.getUser()
+    fun getUser(): UserItem? = db.getAllUserItems().firstOrNull()
     fun addHistoryItem(item: HistoryItem) = db.insertHistoryItem(item)
     fun updateHistoryItemSeries(item: HistoryItem) = db.updateHistoryItemSeries(item.id!!, item.series)
 }
