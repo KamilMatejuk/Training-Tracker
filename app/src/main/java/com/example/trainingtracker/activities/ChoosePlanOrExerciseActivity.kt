@@ -24,5 +24,10 @@ class ChoosePlanOrExerciseActivity : ThemeChangingActivity() {
             val intent = Intent(this, SearchExerciseActivity::class.java)
             startActivity(intent)
         }
+
+        binding.userProfile.setOnClickListener {
+            val intent = Intent(this, UserProfileActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

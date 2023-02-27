@@ -10,6 +10,7 @@ import java.sql.Date
  *
  * @param id identification number
  * @param username name chosen by user
+ * @param sex user's sex
  * @param height user's height in meters
  * @param weight_values user's weight in kilograms how changed across time
  * @param weight_dates user's weight change dates
@@ -18,7 +19,13 @@ import java.sql.Date
 data class UserItem(
     @PrimaryKey(autoGenerate = true) var id: Int?,
     @ColumnInfo(name = "username") var username: String,
+    @ColumnInfo(name = "sex") var sex: Sex,
     @ColumnInfo(name = "height") var height: Float,
     @ColumnInfo(name = "weight_values") var weight_values: List<Float>,
     @ColumnInfo(name = "weight_dates") var weight_dates: List<Date>,
 )
+
+enum class Sex {
+    MALE,
+    FEMALE
+}
