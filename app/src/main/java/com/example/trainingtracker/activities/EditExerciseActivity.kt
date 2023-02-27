@@ -27,9 +27,10 @@ class EditExerciseActivity : ThemeChangingActivity() {
                         null,
                         binding.name.text.toString(),
                         binding.description.text.toString(),
-                        null,
-                        null,
-                        null))
+                        "",
+                        listOf(),
+                        listOf()
+                    ))
                     val intent = Intent(this, ExerciseActivity::class.java)
                     intent.putExtra("EXTRA_EXERCISE", Room.getAllExerciseItems().last())
                     finish()

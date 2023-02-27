@@ -59,7 +59,7 @@ class SearchExerciseActivity : ThemeChangingActivity() {
     private fun updateSearch(search: String){
         searchedExercises.clear()
         if (search.isNotEmpty()) searchedExercises.add(
-            ExerciseItem(-1, search, "", null, null, null))
+            ExerciseItem(-1, search, "", "", listOf(), listOf()))
         searchedExercises.addAll(allExercises.filter { it.name.lowercase(Locale.getDefault()).contains(search.lowercase(Locale.getDefault())) })
         binding.recyclerView.adapter = SearchExerciseAdapter(
             searchedExercises, this, search)
