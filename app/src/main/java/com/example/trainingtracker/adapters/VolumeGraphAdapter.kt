@@ -90,9 +90,10 @@ class VolumeGraphAdapter(
         paint.style = Paint.Style.FILL
         paint.color = ContextCompat.getColor(context, R.color.mint)
         var startPx = 0f
+        val allVolume = items.map { getVolumes(it).sum() }.sum()
         volumes.forEach { vol ->
             val w = width * vol / maxVolume
-            val gap = maxVolume * 0.01f
+            val gap = allVolume * 0.005f
             canvas.drawRect(startPx, 0f, startPx + w - gap, height.toFloat(), paint)
             startPx += w
         }

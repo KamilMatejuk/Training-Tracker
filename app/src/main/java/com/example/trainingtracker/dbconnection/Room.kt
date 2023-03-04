@@ -56,27 +56,6 @@ object Room {
         ).forEach { db.insertExerciseItem(it) }
     }
 
-    private fun createDummyHistory() {
-        db.insertHistoryItem(HistoryItem(null, 1, LocalDateTime.of(2023, 2, 19, 23, 16), "", listOf(
-            SerieItem(null, null, 20.0f, 5, "", true, WeightType.FREEWEIGHT),
-            SerieItem(null, null, 40.0f, 5, "", false, WeightType.FREEWEIGHT),
-            SerieItem(null, null, 40.0f, 5, "", false, WeightType.FREEWEIGHT),
-            SerieItem(null, null, 50.0f, 5, "", false, WeightType.FREEWEIGHT),
-        )))
-        db.insertHistoryItem(HistoryItem(null, 1, LocalDateTime.of(2023, 2, 22, 22, 18), "", listOf(
-            SerieItem(null, null, 20.0f, 5, "", true, WeightType.FREEWEIGHT),
-            SerieItem(null, null, 40.0f, 5, "", false, WeightType.FREEWEIGHT),
-            SerieItem(null, null, 50.0f, 5, "", false, WeightType.FREEWEIGHT),
-            SerieItem(null, null, 60.0f, 5, "", false, WeightType.FREEWEIGHT),
-        )))
-        db.insertHistoryItem(HistoryItem(null, 1, LocalDateTime.of(2023, 2, 24, 19, 55), "", listOf(
-            SerieItem(null, null, 20.0f, 5, "", true, WeightType.FREEWEIGHT),
-            SerieItem(null, null, 40.0f, 5, "", false, WeightType.FREEWEIGHT),
-            SerieItem(null, null, 50.0f, 5, "", false, WeightType.FREEWEIGHT),
-            SerieItem(null, null, 65.0f, 5, "", false, WeightType.FREEWEIGHT),
-        )))
-    }
-
     fun getAllExerciseItems(): List<ExerciseItem> = db.getAllExerciseItems()
     fun getExercise(exercise_id: Int): ExerciseItem = db.getExerciseData(exercise_id)
     fun addExercise(item: ExerciseItem) = db.insertExerciseItem(item)

@@ -1,6 +1,9 @@
 package com.example.trainingtracker.activities
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.FragmentManager
@@ -28,6 +31,7 @@ class AddSerieActivity : ThemeChangingActivity() {
     private var measureType: SwitchMeasureType = SwitchMeasureType.REPS
     private var weightType: SwitchWeightType = SwitchWeightType.FREEWEIGHT
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -58,11 +62,14 @@ class AddSerieActivity : ThemeChangingActivity() {
                 when (result) {
                     SwitchWeightType.FREEWEIGHT -> {
                         binding.weight.isEnabled = true
+                        binding.weightTv.text = "Weight [kg]"
                     }
                     SwitchWeightType.BODYWEIGHT -> {
                         if (bodyWeight <= 0) {
                             fragmentSwitchWeight.switchBtnOn(this, 0)
                             Toast.makeText(this, "Body weight is not set", Toast.LENGTH_SHORT).show()
+                        } else {
+                            binding.weightTv.text = "Body weight [$bodyWeight kg]"
                         }
                         binding.weight.isEnabled = false
                         binding.weight.setText("")
@@ -71,8 +78,10 @@ class AddSerieActivity : ThemeChangingActivity() {
                         if (bodyWeight <= 0) {
                             fragmentSwitchWeight.switchBtnOn(this, 0)
                             Toast.makeText(this, "Body weight is not set", Toast.LENGTH_SHORT).show()
+                        } else {
+                            binding.weightTv.text = "Body weight [$bodyWeight kg] + weight [kg]"
+                            binding.weight.isEnabled = true
                         }
-                        binding.weight.isEnabled = true
                     }
                 }
             }
@@ -106,7 +115,7 @@ class AddSerieActivity : ThemeChangingActivity() {
                 val user = Room.getUser()
                 bodyWeight = user?.weight_values?.lastOrNull() ?: 0f
             }
-        }
+        }.start()
     }
 
     private fun getLastHistoryItem() {
@@ -163,6 +172,7 @@ class AddSerieActivity : ThemeChangingActivity() {
                         val hi = HistoryItem(null, exercise.id!!, now, "", listOf(item))
                         Room.addHistoryItem(hi)
                     }
+                    setResult(Activity.RESULT_OK)
                     finish()
                 }
             }.start()

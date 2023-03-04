@@ -1,9 +1,12 @@
 package com.example.trainingtracker.activities
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -53,10 +56,18 @@ class ExerciseActivity : ThemeChangingActivity() {
             }
         }
 
-            binding.add.setOnClickListener {
+        val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                Log.d("RELOAD", "reloading")
+                loadExerciseHistory()
+            }
+            Log.d("RELOAD", "not reloading")
+        }
+
+        binding.add.setOnClickListener {
             val intent = Intent(this, AddSerieActivity::class.java)
             intent.putExtra("EXTRA_EXERCISE", exercise)
-            startActivity(intent)
+            resultLauncher.launch(intent)
         }
 
         loadExerciseData()
@@ -81,8 +92,10 @@ class ExerciseActivity : ThemeChangingActivity() {
         Thread {
             run {
                 history = (exercise.id?.let { Room.getExerciseHistory(it) } ?: listOf()).sortedBy { it.date }.reversed()
-                reloadFrequency()
-                reloadVolume()
+                runOnUiThread {
+                    reloadFrequency()
+                    reloadVolume()
+                }
             }
         }.start()
     }
