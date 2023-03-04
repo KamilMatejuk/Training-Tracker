@@ -8,116 +8,122 @@
     android:id="@+id/layout"
     android:background="?attr/myBackgroundColor">
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/description"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/frequency"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Frequency"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/photo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/trained_week"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Trained in last 7 days: "
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frequency" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintDimensionRatio="2:1"
+                    android:src="@drawable/bottom_gradient_main"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/gym_bg"
+                    android:contentDescription="@string/img_desc"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <TextView
-        android:id="@+id/trained_month"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Trained in last 31 days: "
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trained_week" />
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textColor="?attr/myForegroundColor"
+                    android:textSize="30sp"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    android:padding="8dp" />
 
-    <TextView
-        android:id="@+id/trained_year"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Trained in last 365 days: "
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trained_month" />
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/frequency_graph"
-        android:name="com.example.trainingtracker.fragments.CalendarFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/trained_year"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:layout="@layout/fragment_calendar" />
-
-    <TextView
-        android:id="@+id/volume"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Volume"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frequency_graph" />
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/switch_measure"
-        android:name="com.example.trainingtracker.fragments.SwitchOptionsFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:layout="@layout/fragment_switch_options"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/volume"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/volume_graph"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="vertical"
-        app:layoutManager="LinearLayoutManager"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch_measure" />
-
-    <TextView
-        android:id="@+id/one_rep_max_last1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Estimated One Rep Max (last training): "
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/volume_graph" />
-
-    <TextView
-        android:id="@+id/one_rep_max_last5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Estimated One Rep Max (last 5 trainings): "
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/one_rep_max_last1" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/descriptiontv"
+                style="@style/h2"
+                android:text="Description" />
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="32dp"/>
+            <TextView
+                android:id="@+id/frequency"
+                style="@style/h2"
+                android:text="Frequency"/>
+            <TextView
+                android:id="@+id/trained_week"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Trained in last 7 days: "
+                android:layout_marginTop="16dp"/>
+            <TextView
+                android:id="@+id/trained_month"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Trained in last 31 days: "/>
+            <TextView
+                android:id="@+id/trained_year"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Trained in last 365 days: "
+                android:layout_marginBottom="32dp"/>
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/frequency_graph"
+                android:name="com.example.trainingtracker.fragments.CalendarFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                tools:layout="@layout/fragment_calendar" />
+            <TextView
+                android:id="@+id/volume"
+                style="@style/h2"
+                android:text="Volume"/>
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/switch_measure"
+                android:name="com.example.trainingtracker.fragments.SwitchOptionsFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout="@layout/fragment_switch_options"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"/>
+            <TextView
+                android:id="@+id/one_rep_max_last1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Estimated One Rep Max (last training): " />
+            <TextView
+                android:id="@+id/one_rep_max_last5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Estimated One Rep Max (last 5 trainings): " />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/volume_graph"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                app:layoutManager="LinearLayoutManager"
+                android:layout_marginTop="16dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="200dp"/>
+        </LinearLayout>
+    </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add"
