@@ -55,18 +55,10 @@ class SwitchOptionsFragment<E: SwitchEnum<E>> : Fragment() {
             layout.addView(btn, layoutParams)
             btns += btn
         }
-        // set colors
+        switchBtnOn(requireContext(), 0)
         btns.forEachIndexed { i, btn ->
-            if (i == 0) switchBtn(requireContext(), btn, true)
-            else switchBtn(requireContext(), btn, false)
-        }
-        // switch on click
-        btns.forEachIndexed { i, btn ->
-            btn.setOnClickListener { clicked ->
-                btns.forEach { sibling ->
-                    switchBtn(requireContext(), sibling, false)
-                }
-                switchBtn(requireContext(), clicked as Button, true)
+            btn.setOnClickListener {
+                switchBtnOn(requireContext(), i)
                 setFragmentResult(resultKey, bundleOf("key" to values[i]))
             }
         }
@@ -74,15 +66,18 @@ class SwitchOptionsFragment<E: SwitchEnum<E>> : Fragment() {
         layout.requestLayout()
     }
 
-    fun switchBtn(context: Context, btn: Button, on: Boolean) {
+    fun switchBtnOn(context: Context, i: Int) {
         val colorAccent = ContextCompat.getColor(context, R.color.mint)
         val colorBg = Tools.colorFromAttr(context, R.attr.myBackgroundColor)
-        if (on) {
-            btn.setTextColor(colorBg)
-            btn.setBackgroundColor(colorAccent)
-        } else {
-            btn.setTextColor(colorAccent)
-            btn.setBackgroundColor(colorBg)
+        if (!this::btns.isInitialized) return
+        btns.forEachIndexed { j, btn ->
+            if (i == j) {
+                btn.setTextColor(colorBg)
+                btn.setBackgroundColor(colorAccent)
+            } else {
+                btn.setTextColor(colorAccent)
+                btn.setBackgroundColor(colorBg)
+            }
         }
     }
 

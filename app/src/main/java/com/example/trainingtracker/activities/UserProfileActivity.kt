@@ -5,6 +5,9 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.trainingtracker.R
 import com.example.trainingtracker.databinding.ActivityUserProfileBinding
+import com.example.trainingtracker.dbconnection.Room
+import com.example.trainingtracker.dbconnection.items.Sex
+import com.example.trainingtracker.dbconnection.items.UserItem
 import com.example.trainingtracker.fragments.SwitchMeasureType
 import com.example.trainingtracker.fragments.SwitchOptionsFragment
 import com.example.trainingtracker.fragments.SwitchSex
@@ -13,6 +16,7 @@ import com.example.trainingtracker.fragments.SwitchWeightType
 class UserProfileActivity : ThemeChangingActivity() {
     private lateinit var binding: ActivityUserProfileBinding
 
+    private var user: UserItem? = null
     private var sex: SwitchSex = SwitchSex.MALE
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +37,24 @@ class UserProfileActivity : ThemeChangingActivity() {
 
             fragmentManager.setFragmentResultListener("tagSex", fragmentSwitchSex) { _, bundle ->
                 sex = bundle.getSerializable("key") as SwitchSex
+            }
+        }
+        getUser()
+    }
+
+    override fun onBackPressed() {
+        finish()
+    }
+
+    private fun getUser() {
+        Thread {
+            run {
+                user = Room.getUser()
+                if (user == null) return@run
+                val sexFragment = supportFragmentManager.findFragmentByTag("tagSex") as SwitchOptionsFragment<SwitchSex>
+
+                sexFragment.switchBtnOn(this, when (user!!.sex) { Sex.MALE -> 0; Sex.FEMALE -> 1})
+
             }
         }
     }

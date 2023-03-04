@@ -60,10 +60,18 @@ class AddSerieActivity : ThemeChangingActivity() {
                         binding.weight.isEnabled = true
                     }
                     SwitchWeightType.BODYWEIGHT -> {
+                        if (bodyWeight <= 0) {
+                            fragmentSwitchWeight.switchBtnOn(this, 0)
+                            Toast.makeText(this, "Body weight is not set", Toast.LENGTH_SHORT).show()
+                        }
                         binding.weight.isEnabled = false
                         binding.weight.setText("")
                     }
                     SwitchWeightType.WEIGHTED_BODYWEIGHT -> {
+                        if (bodyWeight <= 0) {
+                            fragmentSwitchWeight.switchBtnOn(this, 0)
+                            Toast.makeText(this, "Body weight is not set", Toast.LENGTH_SHORT).show()
+                        }
                         binding.weight.isEnabled = true
                     }
                 }
@@ -123,10 +131,6 @@ class AddSerieActivity : ThemeChangingActivity() {
             return
         }
         try {
-            if (bodyWeight <= 0 && (weightType == SwitchWeightType.BODYWEIGHT || weightType == SwitchWeightType.WEIGHTED_BODYWEIGHT)) {
-                Toast.makeText(this, "Body weight is not set", Toast.LENGTH_SHORT).show()
-                return
-            }
             val weight = when (weightType) {
                 SwitchWeightType.FREEWEIGHT -> binding.weight.text.toString().toFloat()
                 SwitchWeightType.BODYWEIGHT -> bodyWeight
