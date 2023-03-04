@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.sql.Date
+import java.time.LocalDate
 
 /**
  * Data class containing information about user
@@ -22,7 +23,7 @@ data class UserItem(
     @ColumnInfo(name = "sex") var sex: Sex,
     @ColumnInfo(name = "height") var height: Float,
     @ColumnInfo(name = "weight_values") var weight_values: List<Float>,
-    @ColumnInfo(name = "weight_dates") var weight_dates: List<Date>,
+    @ColumnInfo(name = "weight_dates") var weight_dates: List<LocalDate>,
 )
 
 enum class Sex {

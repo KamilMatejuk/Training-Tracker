@@ -1,10 +1,8 @@
 package com.example.trainingtracker.dbconnection
 
 import androidx.room.*
-import com.example.trainingtracker.dbconnection.items.ExerciseItem
-import com.example.trainingtracker.dbconnection.items.HistoryItem
-import com.example.trainingtracker.dbconnection.items.SerieItem
-import com.example.trainingtracker.dbconnection.items.UserItem
+import com.example.trainingtracker.dbconnection.items.*
+import java.time.LocalDate
 
 
 /**
@@ -19,10 +17,16 @@ interface DAO {
      ******************************************** USER *********************************************
      ***********************************************************************************************/
     @Query("SELECT * FROM useritem") fun getAllUserItems(): List<UserItem>
-    @Insert fun addUser(item: UserItem)
-    // todo
-    // edit user
-    // add weight measurement
+    @Query("DELETE FROM useritem") fun clearUserItems()
+    @Insert fun insertUserItem(item: UserItem)
+    @Query("UPDATE useritem SET username = :username WHERE id = :user_id")
+    fun updateUsername(user_id: Int, username: String)
+    @Query("UPDATE useritem SET sex = :sex WHERE id = :user_id")
+    fun updateSex(user_id: Int, sex: Sex)
+    @Query("UPDATE useritem SET height = :height WHERE id = :user_id")
+    fun updateHeight(user_id: Int, height: Float)
+    @Query("UPDATE useritem SET weight_dates = :dates, weight_values = :values WHERE id = :user_id")
+    fun updateWeight(user_id: Int, values: List<Float>, dates: List<LocalDate>)
 
 
     /***********************************************************************************************

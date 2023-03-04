@@ -1,12 +1,11 @@
 package com.example.trainingtracker.dbconnection
 
 import android.content.Context
-import androidx.room.Database
+import androidx.room.*
 import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 import com.example.trainingtracker.dbconnection.items.*
 import java.sql.Date
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 
@@ -38,7 +37,7 @@ object Room {
 
     private fun createDefaultUser() {
         if (db.getAllUserItems().isNotEmpty()) return
-        db.addUser(UserItem(null, "Username", Sex.MALE, 1.80f, listOf(), listOf()))
+        db.insertUserItem(UserItem(null, "Username", Sex.MALE, 1.80f, listOf(), listOf()))
     }
 
     private fun loadExercises() {
@@ -83,6 +82,14 @@ object Room {
     fun addExercise(item: ExerciseItem) = db.insertExerciseItem(item)
     fun getExerciseHistory(exercise_id: Int): List<HistoryItem> = db.getExerciseHistory(exercise_id)
     fun getUser(): UserItem? = db.getAllUserItems().firstOrNull()
+    fun addUser(item: UserItem) {
+        db.clearUserItems()
+        db.insertUserItem(item)
+    }
+    fun updateUsername(user_id: Int, username: String) = db.updateUsername(user_id, username)
+    fun updateSex(user_id: Int, sex: Sex) = db.updateSex(user_id, sex)
+    fun updateHeight(user_id: Int, height: Float) = db.updateHeight(user_id, height)
+    fun updateWeight(user_id: Int, values: List<Float>, dates: List<LocalDate>) = db.updateWeight(user_id, values, dates)
     fun addHistoryItem(item: HistoryItem) = db.insertHistoryItem(item)
     fun updateHistoryItemSeries(item: HistoryItem) = db.updateHistoryItemSeries(item.id!!, item.series)
 }

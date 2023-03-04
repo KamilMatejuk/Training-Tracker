@@ -36,6 +36,7 @@
             android:textSize="16sp"
             android:height="48dp"
             android:ems="10"
+            android:textAlignment="textEnd"
             android:textColor="?attr/myForegroundColor"
             android:textColorHint="?attr/myForegroundColor"
             android:backgroundTint="?attr/myForegroundColor"
@@ -88,6 +89,15 @@
             tools:ignore="LabelFor" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/weight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text=""
+        android:textColor="?attr/myForegroundColor"
+        android:textSize="16sp"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add"
