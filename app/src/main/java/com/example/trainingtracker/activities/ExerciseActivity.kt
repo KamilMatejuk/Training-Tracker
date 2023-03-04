@@ -29,7 +29,7 @@ class ExerciseActivity : ThemeChangingActivity() {
     private lateinit var history: List<HistoryItem>
     private val viewModelData: CalendarDataViewModel by viewModels()
 
-    private var measureType: SwitchMeasureType2 = SwitchMeasureType2.REPS
+    private var measureType: OptionMeasureType2 = OptionMeasureType2.REPS
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,14 +43,14 @@ class ExerciseActivity : ThemeChangingActivity() {
         if (savedInstanceState == null) {
             val fragmentManager: FragmentManager = supportFragmentManager
             val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-            val fragmentSwitchMeasure = SwitchOptionsFragment.newInstance("tagMeasureType", enumValues<SwitchMeasureType2>())
+            val fragmentSwitchMeasure = SwitchOptionsFragment.newInstance("tagMeasureType", enumValues<OptionMeasureType2>())
             fragmentTransaction.replace(R.id.switch_measure, fragmentSwitchMeasure, "tagMeasureType")
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit()
 
             fragmentManager.setFragmentResultListener("tagMeasureType", fragmentSwitchMeasure) { _, bundle ->
-                val result = bundle.getSerializable("key") as SwitchMeasureType2
+                val result = bundle.getSerializable("key") as OptionMeasureType2
                 measureType = result
                 reloadVolume()
             }
@@ -84,6 +84,8 @@ class ExerciseActivity : ThemeChangingActivity() {
                 val data = exercise.id?.let { Room.getExercise(it) }
                 binding.name.text = data?.name
                 binding.description.text = data?.description
+                binding.muscles.text = data?.muscles?.joinToString(", ") { it.toString() }
+                binding.equipment.text = data?.equipment?.joinToString(", ") { it.toString() }
             }
         }.start()
     }
@@ -119,8 +121,8 @@ class ExerciseActivity : ThemeChangingActivity() {
         val typeHistory = Tools.deepcopy(history).map { hi ->
             hi.series = hi.series.filter { si ->
                 when (measureType) {
-                    SwitchMeasureType2.REPS -> si.reps != null && si.weight != null
-                    SwitchMeasureType2.TIME -> si.time != null && si.weight != null
+                    OptionMeasureType2.REPS -> si.reps != null && si.weight != null
+                    OptionMeasureType2.TIME -> si.time != null && si.weight != null
                 }
             }
             hi
@@ -136,13 +138,13 @@ class ExerciseActivity : ThemeChangingActivity() {
             oneRepMax5 = "${maxes.maxOf { it }} kg"
         }
         when (measureType) {
-            SwitchMeasureType2.REPS -> {
+            OptionMeasureType2.REPS -> {
                 binding.oneRepMaxLast1.visibility = View.VISIBLE
                 binding.oneRepMaxLast5.visibility = View.VISIBLE
                 binding.oneRepMaxLast1.text = "Estimated One Rep Max (last training): $oneRepMax1"
                 binding.oneRepMaxLast5.text = "Estimated One Rep Max (last 5 trainings): $oneRepMax5"
             }
-            SwitchMeasureType2.TIME -> {
+            OptionMeasureType2.TIME -> {
                 binding.oneRepMaxLast1.visibility = View.GONE
                 binding.oneRepMaxLast5.visibility = View.GONE
             }

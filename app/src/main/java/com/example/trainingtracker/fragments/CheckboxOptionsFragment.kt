@@ -1,23 +1,23 @@
 package com.example.trainingtracker.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.LinearLayout
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import com.example.trainingtracker.R
 import com.example.trainingtracker.Tools
 
-class SwitchOptionsFragment<E: OptionEnum<E>> : Fragment() {
+class CheckboxOptionsFragment<E: OptionEnum<E>> : Fragment() {
     private lateinit var resultKey: String
     private lateinit var values: Array<E>
-    private lateinit var btns: Array<Button>
+    private lateinit var btns: Array<CheckBox>
+    private lateinit var selected: List<E>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,13 +25,14 @@ class SwitchOptionsFragment<E: OptionEnum<E>> : Fragment() {
             resultKey = requireArguments().getString("key") ?: ""
             values = requireArguments().getSerializable("values") as Array<E>
         }
+        selected = listOf()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_switch_options, container, false)
+        val view = inflater.inflate(R.layout.fragment_checkbox_options, container, false)
         createButtons(view)
         return view
     }
@@ -42,50 +43,37 @@ class SwitchOptionsFragment<E: OptionEnum<E>> : Fragment() {
         val layout = view.findViewById<LinearLayout>(R.id.layout)
         layout.removeAllViews()
         values.forEach {
-            val btn = Button(context)
+            val btn = CheckBox(context)
             val layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                1.0f)
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT)
             layoutParams.setMargins(0, 0, 0, 0)
             btn.setPadding(0, 0, 0, 0)
-            btn.textSize = 10f
             btn.text = it.desc
+            btn.setTextColor(Tools.colorFromAttr(requireContext(), R.attr.myForegroundColor))
             layout.addView(btn, layoutParams)
             btns += btn
         }
-        switchBtnOn(requireContext(), 0)
         btns.forEachIndexed { i, btn ->
-            btn.setOnClickListener {
-                switchBtnOn(requireContext(), i)
-                setFragmentResult(resultKey, bundleOf("key" to values[i]))
+            btn.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
+                    selected = selected + values[i]
+                } else {
+                    selected = selected.toMutableList().filter { it != values[i] }.toList()
+                }
+                setFragmentResult(resultKey, bundleOf("key" to selected))
             }
         }
         layout.invalidate()
         layout.requestLayout()
     }
 
-    fun switchBtnOn(context: Context, i: Int) {
-        val colorAccent = ContextCompat.getColor(context, R.color.mint)
-        val colorBg = Tools.colorFromAttr(context, R.attr.myBackgroundColor)
-        if (!this::btns.isInitialized) return
-        btns.forEachIndexed { j, btn ->
-            if (i == j) {
-                btn.setTextColor(colorBg)
-                btn.setBackgroundColor(colorAccent)
-            } else {
-                btn.setTextColor(colorAccent)
-                btn.setBackgroundColor(colorBg)
-            }
-        }
-    }
-
     companion object {
         inline fun <reified E: OptionEnum<E>> newInstance(
             resultKey: String,
             values: Array<E>
-        ): SwitchOptionsFragment<E> {
-            val f = SwitchOptionsFragment<E>()
+        ): CheckboxOptionsFragment<E> {
+            val f = CheckboxOptionsFragment<E>()
             val args = Bundle()
             args.putString("key", resultKey)
             args.putSerializable("values", values)

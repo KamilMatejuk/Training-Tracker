@@ -3,7 +3,6 @@ package com.example.trainingtracker.activities
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.FragmentManager
@@ -15,9 +14,9 @@ import com.example.trainingtracker.dbconnection.items.ExerciseItem
 import com.example.trainingtracker.dbconnection.items.HistoryItem
 import com.example.trainingtracker.dbconnection.items.SerieItem
 import com.example.trainingtracker.dbconnection.items.WeightType
-import com.example.trainingtracker.fragments.SwitchMeasureType
+import com.example.trainingtracker.fragments.OptionMeasureType
 import com.example.trainingtracker.fragments.SwitchOptionsFragment
-import com.example.trainingtracker.fragments.SwitchWeightType
+import com.example.trainingtracker.fragments.OptionWeightType
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 import kotlin.math.floor
@@ -28,8 +27,8 @@ class AddSerieActivity : ThemeChangingActivity() {
     private lateinit var history: HistoryItem
     private var bodyWeight: Float = 0f
 
-    private var measureType: SwitchMeasureType = SwitchMeasureType.REPS
-    private var weightType: SwitchWeightType = SwitchWeightType.FREEWEIGHT
+    private var measureType: OptionMeasureType = OptionMeasureType.REPS
+    private var weightType: OptionWeightType = OptionWeightType.FREEWEIGHT
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,8 +47,8 @@ class AddSerieActivity : ThemeChangingActivity() {
         if (savedInstanceState == null) {
             val fragmentManager: FragmentManager = supportFragmentManager
             val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-            val fragmentSwitchWeight = SwitchOptionsFragment.newInstance("tagWeightType", enumValues<SwitchWeightType>())
-            val fragmentSwitchMeasure = SwitchOptionsFragment.newInstance("tagMeasureType", enumValues<SwitchMeasureType>())
+            val fragmentSwitchWeight = SwitchOptionsFragment.newInstance("tagWeightType", enumValues<OptionWeightType>())
+            val fragmentSwitchMeasure = SwitchOptionsFragment.newInstance("tagMeasureType", enumValues<OptionMeasureType>())
             fragmentTransaction.replace(R.id.switch_weight, fragmentSwitchWeight, "tagWeightType")
             fragmentTransaction.replace(R.id.switch_measure, fragmentSwitchMeasure, "tagMeasureType")
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
@@ -57,14 +56,14 @@ class AddSerieActivity : ThemeChangingActivity() {
             fragmentTransaction.commit()
 
             fragmentManager.setFragmentResultListener("tagWeightType", fragmentSwitchWeight) { _, bundle ->
-                val result = bundle.getSerializable("key") as SwitchWeightType
+                val result = bundle.getSerializable("key") as OptionWeightType
                 weightType = result
                 when (result) {
-                    SwitchWeightType.FREEWEIGHT -> {
+                    OptionWeightType.FREEWEIGHT -> {
                         binding.weight.isEnabled = true
                         binding.weightTv.text = "Weight [kg]"
                     }
-                    SwitchWeightType.BODYWEIGHT -> {
+                    OptionWeightType.BODYWEIGHT -> {
                         if (bodyWeight <= 0) {
                             fragmentSwitchWeight.switchBtnOn(this, 0)
                             Toast.makeText(this, "Body weight is not set", Toast.LENGTH_SHORT).show()
@@ -74,7 +73,7 @@ class AddSerieActivity : ThemeChangingActivity() {
                         binding.weight.isEnabled = false
                         binding.weight.setText("")
                     }
-                    SwitchWeightType.WEIGHTED_BODYWEIGHT -> {
+                    OptionWeightType.WEIGHTED_BODYWEIGHT -> {
                         if (bodyWeight <= 0) {
                             fragmentSwitchWeight.switchBtnOn(this, 0)
                             Toast.makeText(this, "Body weight is not set", Toast.LENGTH_SHORT).show()
@@ -87,14 +86,14 @@ class AddSerieActivity : ThemeChangingActivity() {
             }
 
             fragmentManager.setFragmentResultListener("tagMeasureType", fragmentSwitchMeasure) { _, bundle ->
-                val result = bundle.getSerializable("key") as SwitchMeasureType
+                val result = bundle.getSerializable("key") as OptionMeasureType
                 measureType = result
                 when (result) {
-                    SwitchMeasureType.REPS -> {
+                    OptionMeasureType.REPS -> {
                         binding.repsLayout.visibility = View.VISIBLE
                         binding.timeLayout.visibility = View.GONE
                     }
-                    SwitchMeasureType.TIME -> {
+                    OptionMeasureType.TIME -> {
                         binding.repsLayout.visibility = View.GONE
                         binding.timeLayout.visibility = View.VISIBLE
                     }
@@ -141,23 +140,23 @@ class AddSerieActivity : ThemeChangingActivity() {
         }
         try {
             val weight = when (weightType) {
-                SwitchWeightType.FREEWEIGHT -> binding.weight.text.toString().toFloat()
-                SwitchWeightType.BODYWEIGHT -> bodyWeight
-                SwitchWeightType.WEIGHTED_BODYWEIGHT -> bodyWeight + binding.weight.text.toString()
+                OptionWeightType.FREEWEIGHT -> binding.weight.text.toString().toFloat()
+                OptionWeightType.BODYWEIGHT -> bodyWeight
+                OptionWeightType.WEIGHTED_BODYWEIGHT -> bodyWeight + binding.weight.text.toString()
                     .toFloat()
             }
-            val time = if (measureType == SwitchMeasureType.TIME) floor(
+            val time = if (measureType == OptionMeasureType.TIME) floor(
                 binding.time.text.toString().toDouble()
             ).toInt() else null
-            val reps = if (measureType == SwitchMeasureType.REPS) floor(
+            val reps = if (measureType == OptionMeasureType.REPS) floor(
                 binding.reps.text.toString().toDouble()
             ).toInt() else null
             val warmup = binding.warmup.isChecked
             val item = SerieItem(null, time, weight, reps, "", warmup,
                 when(weightType){
-                    SwitchWeightType.FREEWEIGHT -> WeightType.FREEWEIGHT
-                    SwitchWeightType.BODYWEIGHT -> WeightType.BODYWEIGHT
-                    SwitchWeightType.WEIGHTED_BODYWEIGHT -> WeightType.WEIGHTED_BODYWEIGHT
+                    OptionWeightType.FREEWEIGHT -> WeightType.FREEWEIGHT
+                    OptionWeightType.BODYWEIGHT -> WeightType.BODYWEIGHT
+                    OptionWeightType.WEIGHTED_BODYWEIGHT -> WeightType.WEIGHTED_BODYWEIGHT
                 })
 
             val now = LocalDateTime.now()

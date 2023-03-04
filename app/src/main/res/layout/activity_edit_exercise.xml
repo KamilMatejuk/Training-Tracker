@@ -1,90 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.EditExerciseActivity"
     android:id="@+id/layout"
-    android:background="?attr/myBackgroundColor"
-    android:padding="16dp">
+    android:background="?attr/myBackgroundColor">
 
-    <TextView
-        android:id="@+id/tv_name"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="Name"
-        android:textColor="@color/mint"
-        android:textStyle="bold"
-        android:textSize="16sp"/>
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_name"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:height="48dp"
-        android:textColor="?attr/myForegroundColor"
-        android:textColorHint="?attr/myForegroundColor"
-        android:backgroundTint="?attr/myForegroundColor"
-        android:autofillHints=""
-        android:padding="16dp"
-        android:inputType="textAutoComplete"
-        tools:ignore="LabelFor" />
+        <TextView
+            style="@style/h2"
+            android:layout_marginTop="24dp"
+            android:text="Name"/>
 
-    <TextView
-        android:id="@+id/tv_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name"
-        android:text="Description"
-        android:textColor="@color/mint"
-        android:textStyle="bold"
-        android:textSize="16sp"/>
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:height="48dp"
+            android:textColor="?attr/myForegroundColor"
+            android:textColorHint="?attr/myForegroundColor"
+            android:backgroundTint="?attr/myForegroundColor"
+            android:autofillHints=""
+            android:padding="16dp"
+            android:inputType="textAutoComplete"
+            tools:ignore="LabelFor" />
 
-    <EditText
-        android:id="@+id/description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_description"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:textColor="?attr/myForegroundColor"
-        android:textColorHint="?attr/myForegroundColor"
-        android:backgroundTint="?attr/myForegroundColor"
-        android:autofillHints=""
-        android:padding="16dp"
-        android:inputType="textMultiLine"
-        android:lines="8"
-        android:minLines="8"
-        android:maxLines="12"
-        android:gravity="top|start"
-        android:scrollbars="vertical"
-        android:scrollHorizontally="false"
-        tools:ignore="LabelFor" />
+        <TextView
+            style="@style/h2"
+            android:layout_marginTop="24dp"
+            android:text="Description"/>
 
-    <Button
-        android:id="@+id/save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SAVE"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description" />
+        <EditText
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="?attr/myForegroundColor"
+            android:textColorHint="?attr/myForegroundColor"
+            android:backgroundTint="?attr/myForegroundColor"
+            android:autofillHints=""
+            android:padding="16dp"
+            android:inputType="textMultiLine"
+            android:lines="8"
+            android:minLines="8"
+            android:maxLines="12"
+            android:gravity="top|start"
+            android:scrollbars="vertical"
+            android:scrollHorizontally="false"
+            tools:ignore="LabelFor" />
 
+        <TextView
+            style="@style/h2"
+            android:layout_marginTop="24dp"
+            android:text="Muscles"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/checkbox_muscles"
+            android:name="com.example.trainingtracker.fragments.CheckboxOptionsFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout="@layout/fragment_checkbox_options" />
+
+        <TextView
+            style="@style/h2"
+            android:layout_marginTop="24dp"
+            android:text="Equipment"/>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/checkbox_equipment"
+            android:name="com.example.trainingtracker.fragments.CheckboxOptionsFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout="@layout/fragment_checkbox_options" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SAVE"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</ScrollView>

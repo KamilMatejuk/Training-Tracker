@@ -1,15 +1,12 @@
 package com.example.trainingtracker.activities
 
 import android.annotation.SuppressLint
-import android.content.DialogInterface
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import android.view.Gravity
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.trainingtracker.R
 import com.example.trainingtracker.Tools
@@ -17,10 +14,8 @@ import com.example.trainingtracker.databinding.ActivityUserProfileBinding
 import com.example.trainingtracker.dbconnection.Room
 import com.example.trainingtracker.dbconnection.items.Sex
 import com.example.trainingtracker.dbconnection.items.UserItem
-import com.example.trainingtracker.fragments.SwitchMeasureType
 import com.example.trainingtracker.fragments.SwitchOptionsFragment
-import com.example.trainingtracker.fragments.SwitchSex
-import com.example.trainingtracker.fragments.SwitchWeightType
+import com.example.trainingtracker.fragments.OptionSex
 import java.time.LocalDate
 import java.util.*
 
@@ -39,15 +34,15 @@ class UserProfileActivity : ThemeChangingActivity() {
 
         if (savedInstanceState == null) {
             val fragmentTransaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-            val fragmentSwitchSex = SwitchOptionsFragment.newInstance("tagSex", enumValues<SwitchSex>())
+            val fragmentSwitchSex = SwitchOptionsFragment.newInstance("tagSex", enumValues<OptionSex>())
             fragmentTransaction.replace(R.id.switch_sex, fragmentSwitchSex, "tagSex")
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
             supportFragmentManager.setFragmentResultListener("tagSex", fragmentSwitchSex) { _, bundle ->
-                sex = when (bundle.getSerializable("key") as SwitchSex) {
-                    SwitchSex.MALE -> Sex.MALE
-                    SwitchSex.FEMALE -> Sex.FEMALE
+                sex = when (bundle.getSerializable("key") as OptionSex) {
+                    OptionSex.MALE -> Sex.MALE
+                    OptionSex.FEMALE -> Sex.FEMALE
                 }
             }
         }
@@ -82,7 +77,7 @@ class UserProfileActivity : ThemeChangingActivity() {
                 sex = user!!.sex
                 val sexFragment = supportFragmentManager.findFragmentByTag("tagSex")
                 if (sexFragment != null) {
-                    (sexFragment as SwitchOptionsFragment<SwitchSex>).switchBtnOn(this,
+                    (sexFragment as SwitchOptionsFragment<OptionSex>).switchBtnOn(this,
                         when (user!!.sex) { Sex.MALE -> 0; Sex.FEMALE -> 1 })
                 }
                 binding.username.setText(user?.username)

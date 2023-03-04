@@ -52,11 +52,28 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
             <TextView
-                android:id="@+id/descriptiontv"
                 style="@style/h2"
                 android:text="Description" />
             <TextView
                 android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="32dp"/>
+            <TextView
+                style="@style/h2"
+                android:text="Muscles" />
+            <TextView
+                android:id="@+id/muscles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="32dp"/>
+            <TextView
+                style="@style/h2"
+                android:text="Equipment" />
+            <TextView
+                android:id="@+id/equipment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
