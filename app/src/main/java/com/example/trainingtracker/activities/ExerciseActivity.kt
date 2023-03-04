@@ -5,7 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.example.trainingtracker.R
 import com.example.trainingtracker.Tools
 import com.example.trainingtracker.adapters.VolumeGraphAdapter
@@ -14,7 +15,7 @@ import com.example.trainingtracker.dbconnection.Room
 import com.example.trainingtracker.dbconnection.items.ExerciseItem
 import com.example.trainingtracker.dbconnection.items.HistoryItem
 import com.example.trainingtracker.dbconnection.items.SerieItem
-import com.example.trainingtracker.fragments.CalendarDataViewModel
+import com.example.trainingtracker.fragments.*
 import java.time.LocalDate
 import java.time.Period
 
@@ -25,8 +26,7 @@ class ExerciseActivity : ThemeChangingActivity() {
     private lateinit var history: List<HistoryItem>
     private val viewModelData: CalendarDataViewModel by viewModels()
 
-    private enum class MeasureType { REPS, TIME }
-    private var measureType: MeasureType = MeasureType.REPS
+    private var measureType: SwitchMeasureType2 = SwitchMeasureType2.REPS
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,11 +37,23 @@ class ExerciseActivity : ThemeChangingActivity() {
 
         exercise = (intent.getSerializableExtra("EXTRA_EXERCISE") as? ExerciseItem)!!
 
-        binding.switchTypeReps.setOnClickListener { switchMeasureType(MeasureType.REPS) }
-        binding.switchTypeTime.setOnClickListener { switchMeasureType(MeasureType.TIME) }
-        switchMeasureType(measureType)
+        if (savedInstanceState == null) {
+            val fragmentManager: FragmentManager = supportFragmentManager
+            val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+            val fragmentSwitchMeasure = SwitchOptionsFragment.newInstance("tagMeasureType", enumValues<SwitchMeasureType2>())
+            fragmentTransaction.replace(R.id.switch_measure, fragmentSwitchMeasure, "tagMeasureType")
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit()
 
-        binding.add.setOnClickListener {
+            fragmentManager.setFragmentResultListener("tagMeasureType", fragmentSwitchMeasure) { _, bundle ->
+                val result = bundle.getSerializable("key") as SwitchMeasureType2
+                measureType = result
+                reloadVolume()
+            }
+        }
+
+            binding.add.setOnClickListener {
             val intent = Intent(this, AddSerieActivity::class.java)
             intent.putExtra("EXTRA_EXERCISE", exercise)
             startActivity(intent)
@@ -51,10 +63,8 @@ class ExerciseActivity : ThemeChangingActivity() {
         loadExerciseHistory()
     }
 
-    override fun onRestart() {
-        super.onRestart()
+    override fun onBackPressed() {
         finish()
-        startActivity(intent)
     }
 
     private fun loadExerciseData() {
@@ -96,8 +106,8 @@ class ExerciseActivity : ThemeChangingActivity() {
         val typeHistory = Tools.deepcopy(history).map { hi ->
             hi.series = hi.series.filter { si ->
                 when (measureType) {
-                    MeasureType.REPS -> si.reps != null && si.weight != null
-                    MeasureType.TIME -> si.time != null && si.weight != null
+                    SwitchMeasureType2.REPS -> si.reps != null && si.weight != null
+                    SwitchMeasureType2.TIME -> si.time != null && si.weight != null
                 }
             }
             hi
@@ -113,32 +123,17 @@ class ExerciseActivity : ThemeChangingActivity() {
             oneRepMax5 = "${maxes.maxOf { it }} kg"
         }
         when (measureType) {
-            MeasureType.REPS -> {
+            SwitchMeasureType2.REPS -> {
                 binding.oneRepMaxLast1.visibility = View.VISIBLE
                 binding.oneRepMaxLast5.visibility = View.VISIBLE
                 binding.oneRepMaxLast1.text = "Estimated One Rep Max (last training): $oneRepMax1"
                 binding.oneRepMaxLast5.text = "Estimated One Rep Max (last 5 trainings): $oneRepMax5"
             }
-            MeasureType.TIME -> {
+            SwitchMeasureType2.TIME -> {
                 binding.oneRepMaxLast1.visibility = View.GONE
                 binding.oneRepMaxLast5.visibility = View.GONE
             }
         }
-    }
-
-    private fun switchMeasureType(to: MeasureType) {
-        measureType = to
-        when (to) {
-            MeasureType.REPS -> {
-                Tools.switchBtn(this, binding.switchTypeReps, true)
-                Tools.switchBtn(this, binding.switchTypeTime, false)
-            }
-            MeasureType.TIME -> {
-                Tools.switchBtn(this, binding.switchTypeReps, false)
-                Tools.switchBtn(this, binding.switchTypeTime, true)
-            }
-        }
-        reloadVolume()
     }
 
     private fun oneRepMax(items: List<SerieItem>): Float {

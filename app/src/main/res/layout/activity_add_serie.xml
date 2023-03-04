@@ -17,39 +17,12 @@
         android:text="Mark as warmup"
         android:textColor="?attr/myForegroundColor" />
 
-    <LinearLayout
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/switch_weight"
+        android:name="com.example.trainingtracker.fragments.SwitchOptionsFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/switch_weight_free"
-            android:layout_width="0dp"
-            android:layout_height="64dp"
-            android:layout_weight="1"
-            android:text="Free\nweight"
-            android:textSize="10sp"
-            android:stateListAnimator="@null" />
-
-        <Button
-            android:id="@+id/switch_weight_body"
-            android:layout_width="0dp"
-            android:layout_height="64dp"
-            android:layout_weight="1"
-            android:text="Body\nweight"
-            android:textSize="10sp"
-            android:stateListAnimator="@null" />
-
-        <Button
-            android:id="@+id/switch_weight_both"
-            android:layout_width="0dp"
-            android:layout_height="64dp"
-            android:layout_weight="1.5"
-            android:text="Body weight +\nfree weight"
-            android:textSize="10sp"
-            android:stateListAnimator="@null" />
-
-    </LinearLayout>
+        tools:layout="@layout/fragment_switch_options" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -86,30 +59,12 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/switch_measure"
+        android:name="com.example.trainingtracker.fragments.SwitchOptionsFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/switch_type_reps"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="For reps"
-            android:textSize="10sp"
-            android:stateListAnimator="@null" />
-
-        <Button
-            android:id="@+id/switch_type_time"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="For time"
-            android:textSize="10sp"
-            android:stateListAnimator="@null" />
-
-    </LinearLayout>
+        tools:layout="@layout/fragment_switch_options" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/time_layout"

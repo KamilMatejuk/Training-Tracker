@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list
     xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item
-        android:left="@dimen/padding_internal"
-        android:right="@dimen/padding_internal"
-        android:top="@dimen/padding_internal">
-
+    <item>
         <shape android:shape="rectangle">
             <solid
                 android:color="?attr/myBackgroundColorDarker" >

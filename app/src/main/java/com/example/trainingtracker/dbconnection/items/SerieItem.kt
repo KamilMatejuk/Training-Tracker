@@ -21,7 +21,7 @@ data class SerieItem(
     @ColumnInfo(name = "time") var time: Int?,
     @ColumnInfo(name = "weight") var weight: Float?,
     @ColumnInfo(name = "reps") var reps: Int?,
-    @ColumnInfo(name = "notes") var notes: String?,
+    @ColumnInfo(name = "notes") var notes: String,
     @ColumnInfo(name = "warmup") var warmup: Boolean,
     @ColumnInfo(name = "weight_type") var weight_type: WeightType,
 )

@@ -21,16 +21,4 @@ object Tools {
             item
         }
     }
-
-    fun switchBtn(context: Context, btn: Button, on: Boolean) {
-        val colorAccent = ContextCompat.getColor(context, R.color.mint)
-        val colorBg = colorFromAttr(context, R.attr.myBackgroundColor)
-        if (on) {
-            btn.setTextColor(colorBg)
-            btn.setBackgroundColor(colorAccent)
-        } else {
-            btn.setTextColor(colorAccent)
-            btn.setBackgroundColor(colorBg)
-        }
-    }
 }
