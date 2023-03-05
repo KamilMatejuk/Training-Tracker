@@ -17,8 +17,10 @@ import com.example.trainingtracker.dbconnection.items.WeightType
 import com.example.trainingtracker.fragments.OptionMeasureType
 import com.example.trainingtracker.fragments.SwitchOptionsFragment
 import com.example.trainingtracker.fragments.OptionWeightType
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
+import java.util.Collections
 import kotlin.math.floor
 
 class AddSerieActivity : ThemeChangingActivity() {
@@ -112,7 +114,8 @@ class AddSerieActivity : ThemeChangingActivity() {
         Thread {
             run {
                 val user = Room.getUser()
-                bodyWeight = user?.weight_values?.lastOrNull() ?: 0f
+                val latestDate = user?.weight?.keys?.maxByOrNull { it }
+                if (latestDate != null) bodyWeight = user.weight[latestDate] ?: 0f
             }
         }.start()
     }
@@ -139,12 +142,7 @@ class AddSerieActivity : ThemeChangingActivity() {
             return
         }
         try {
-            val weight = when (weightType) {
-                OptionWeightType.FREEWEIGHT -> binding.weight.text.toString().toFloat()
-                OptionWeightType.BODYWEIGHT -> bodyWeight
-                OptionWeightType.WEIGHTED_BODYWEIGHT -> bodyWeight + binding.weight.text.toString()
-                    .toFloat()
-            }
+            val weight = binding.weight.text.toString().toFloat()
             val time = if (measureType == OptionMeasureType.TIME) floor(
                 binding.time.text.toString().toDouble()
             ).toInt() else null

@@ -25,8 +25,8 @@ interface DAO {
     fun updateSex(user_id: Int, sex: Sex)
     @Query("UPDATE useritem SET height = :height WHERE id = :user_id")
     fun updateHeight(user_id: Int, height: Float)
-    @Query("UPDATE useritem SET weight_dates = :dates, weight_values = :values WHERE id = :user_id")
-    fun updateWeight(user_id: Int, values: List<Float>, dates: List<LocalDate>)
+    @Query("UPDATE useritem SET weight = :weight WHERE id = :user_id")
+    fun updateWeight(user_id: Int, weight: HashMap<LocalDate, Float>)
 
 
     /***********************************************************************************************

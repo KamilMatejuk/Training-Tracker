@@ -5,11 +5,21 @@ import com.example.trainingtracker.dbconnection.items.Equipment
 import com.example.trainingtracker.dbconnection.items.Muscle
 import com.example.trainingtracker.dbconnection.items.SerieItem
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.util.stream.Collectors
 
-// todo - fix date saving, check time saving
 object Converters {
+    @TypeConverter @JvmStatic fun stringToMap(value: String): HashMap<LocalDate, Float> {
+        return if (value.isEmpty()) hashMapOf() else HashMap(value.split("|").stream().collect(Collectors.toMap(
+            { LocalDate.parse(it.split(":")[0]) },
+            { it.split(":")[1].toFloat() }
+        )))
+    }
+    @TypeConverter @JvmStatic fun mapToString(value: HashMap<LocalDate, Float>?): String {
+        return value?.map { "${it.key}:${it.value}" }?.joinToString("|") ?: ""
+    }
     @TypeConverter @JvmStatic fun stringToLocalDateTime(dateString: String): LocalDateTime = LocalDateTime.parse(dateString)
     @TypeConverter @JvmStatic fun localDateTimeToString(date: LocalDateTime): String = date.toString()
 

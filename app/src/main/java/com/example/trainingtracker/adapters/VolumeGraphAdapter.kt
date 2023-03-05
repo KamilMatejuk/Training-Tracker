@@ -17,12 +17,16 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trainingtracker.R
 import com.example.trainingtracker.dbconnection.items.HistoryItem
+import com.example.trainingtracker.dbconnection.items.WeightType
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.collections.HashMap
 
 
 class VolumeGraphAdapter(
     private val items: List<HistoryItem>,
+    private val bodyWeights: HashMap<LocalDate, Float>,
     private val context: Context
 ) : RecyclerView.Adapter<VolumeGraphAdapter.ViewHolder>() {
 
@@ -38,13 +42,20 @@ class VolumeGraphAdapter(
             v.setOnClickListener {
                 // todo show popup with more data
                 val date = item.date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+                val bw = getBodyWeight(item.date.toLocalDate())
                 val series = item.series.map {
-                    if (it.reps != null && it.weight != null) {
-                        "${it.weight} kg x ${it.reps} reps"
-                    } else if (it.time != null && it.weight != null) {
-                        "${it.time} kg x ${it.time} s"
+                    if (it.weight == null) return@map ""
+                    val weight = when (it.weight_type) {
+                        WeightType.FREEWEIGHT -> "${it.weight} kg"
+                        WeightType.BODYWEIGHT -> "BW $bw kg" // todo
+                        WeightType.WEIGHTED_BODYWEIGHT -> "BW $bw + ${it.weight} kg" // todo
+                    }
+                    if (it.reps != null) {
+                        "$weight x ${it.reps} reps"
+                    } else if (it.time != null) {
+                        "$weight x ${it.time} s"
                     } else ""
-                }.joinToString("\n")
+                }.filter { it.isNotEmpty() }.joinToString("\n")
                 val total = getVolumes(item).sum()
                 val text = "On $date did:\n$series\nTotal volume $total kg"
                 Toast.makeText(context, text, Toast.LENGTH_LONG).show()
@@ -68,6 +79,7 @@ class VolumeGraphAdapter(
     }
 
     fun getVolumes(item: HistoryItem): List<Float> {
+        // todo
         return item.series.map {
             if (it.reps != null && it.weight != null) {
                 it.reps!! * it.weight!!
@@ -75,6 +87,16 @@ class VolumeGraphAdapter(
                 it.time!! * it.weight!!
             } else 0.0f
         }
+    }
+
+    fun getBodyWeight(date: LocalDate): Float {
+        val dates = bodyWeights.keys.sorted()
+        for (i in 1 until dates.size) {
+            if (dates[i-1] <= date && date < dates[i]) {
+                return bodyWeights[dates[i-1]] ?: 0f
+            }
+        }
+        return bodyWeights[dates.lastOrNull() ?: LocalDate.now()] ?: 0f
     }
 
     fun getGraphImg(item: HistoryItem): Bitmap? {

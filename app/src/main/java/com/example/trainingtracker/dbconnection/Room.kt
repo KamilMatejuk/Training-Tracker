@@ -35,7 +35,7 @@ object Room {
 
     private fun createDefaultUser() {
         if (db.getAllUserItems().isNotEmpty()) return
-        db.insertUserItem(UserItem(null, "Username", Sex.MALE, 1.80f, listOf(), listOf()))
+        db.insertUserItem(UserItem(null, "Username", Sex.MALE, 1.80f, hashMapOf()))
     }
 
     private fun loadExercises() {
@@ -66,7 +66,7 @@ object Room {
     fun updateUsername(user_id: Int, username: String) = db.updateUsername(user_id, username)
     fun updateSex(user_id: Int, sex: Sex) = db.updateSex(user_id, sex)
     fun updateHeight(user_id: Int, height: Float) = db.updateHeight(user_id, height)
-    fun updateWeight(user_id: Int, values: List<Float>, dates: List<LocalDate>) = db.updateWeight(user_id, values, dates)
+    fun updateWeight(user_id: Int, weight: HashMap<LocalDate, Float>) = db.updateWeight(user_id, weight)
     fun addHistoryItem(item: HistoryItem) = db.insertHistoryItem(item)
     fun updateHistoryItemSeries(item: HistoryItem) = db.updateHistoryItemSeries(item.id!!, item.series)
 }

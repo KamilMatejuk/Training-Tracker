@@ -27,6 +27,7 @@ class ExerciseActivity : ThemeChangingActivity() {
     private lateinit var binding: ActivityExerciseBinding
     private lateinit var exercise: ExerciseItem
     private lateinit var history: List<HistoryItem>
+    private lateinit var bodyWeight: HashMap<LocalDate, Float>
     private val viewModelData: CalendarDataViewModel by viewModels()
 
     private var measureType: OptionMeasureType2 = OptionMeasureType2.REPS
@@ -94,6 +95,7 @@ class ExerciseActivity : ThemeChangingActivity() {
         Thread {
             run {
                 history = (exercise.id?.let { Room.getExerciseHistory(it) } ?: listOf()).sortedBy { it.date }.reversed()
+                bodyWeight = Room.getUser()?.weight ?: hashMapOf()
                 runOnUiThread {
                     reloadFrequency()
                     reloadVolume()
@@ -127,7 +129,7 @@ class ExerciseActivity : ThemeChangingActivity() {
             }
             hi
         }.filter { hi -> hi.series.isNotEmpty() }
-        binding.volumeGraph.adapter = VolumeGraphAdapter(typeHistory, this)
+        binding.volumeGraph.adapter = VolumeGraphAdapter(typeHistory, bodyWeight, this)
         var oneRepMax1 = "?"
         if (typeHistory.size >= 1) {
             oneRepMax1 = "${oneRepMax(typeHistory[0].series)} kg"

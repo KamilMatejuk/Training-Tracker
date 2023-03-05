@@ -71,7 +71,7 @@ class UserProfileActivity : ThemeChangingActivity() {
             run {
                 user = Room.getUser()
                 if (user == null) {
-                    user = UserItem(1, "", Sex.MALE, 0f, listOf(), listOf())
+                    user = UserItem(1, "", Sex.MALE, 0f, hashMapOf())
                     Room.addUser(user!!)
                 }
                 sex = user!!.sex
@@ -82,9 +82,7 @@ class UserProfileActivity : ThemeChangingActivity() {
                 }
                 binding.username.setText(user?.username)
                 binding.height.setText(user?.height.toString())
-                user?.weight_values?.forEachIndexed { i, weight ->
-                    binding.weight.text = "${binding.weight.text}\n${weight} on ${user?.weight_dates?.get(i)}"
-                }
+                binding.weight.text = user?.weight?.map { (date, weight) -> "$weight on $date" }?.joinToString("\n")
             }
         }.start()
     }
@@ -104,12 +102,11 @@ class UserProfileActivity : ThemeChangingActivity() {
                 Toast.makeText(this, "Couldn't parse ${input.text}", Toast.LENGTH_SHORT).show()
                 return@setPositiveButton
             }
-            val values = (user!!.weight_values.toMutableList() + weight).toList()
-            val dates = (user!!.weight_dates.toMutableList() + LocalDate.now()).toList()
-            binding.weight.text = "${binding.weight.text}\n${weight} on ${LocalDate.now()}"
+            user!!.weight[LocalDate.now()] = weight
+            binding.weight.text = user?.weight?.map { (date, weight) -> "$weight on $date" }?.joinToString("\n")
             Thread {
                 run {
-                    Room.updateWeight(user!!.id!!, values, dates)
+                    Room.updateWeight(user!!.id!!, user!!.weight)
                 }
             }.start()
         }

@@ -12,8 +12,7 @@ import java.time.LocalDate
  * @param username name chosen by user
  * @param sex user's sex
  * @param height user's height in meters
- * @param weight_values user's weight in kilograms how changed across time
- * @param weight_dates user's weight change dates
+ * @param weight user's weight in kilograms how changed across time
  */
 @Entity
 data class UserItem(
@@ -21,8 +20,7 @@ data class UserItem(
     @ColumnInfo(name = "username") var username: String,
     @ColumnInfo(name = "sex") var sex: Sex,
     @ColumnInfo(name = "height") var height: Float,
-    @ColumnInfo(name = "weight_values") var weight_values: List<Float>,
-    @ColumnInfo(name = "weight_dates") var weight_dates: List<LocalDate>,
+    @ColumnInfo(name = "weight") var weight: HashMap<LocalDate, Float>,
 )
 
 enum class Sex {
