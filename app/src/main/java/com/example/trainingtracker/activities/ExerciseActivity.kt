@@ -45,8 +45,8 @@ class ExerciseActivity : ThemeChangingActivity() {
             val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
             val fragmentSwitchMeasure = SwitchOptionsFragment.newInstance("tagMeasureType", enumValues<OptionMeasureType2>())
             fragmentTransaction.replace(R.id.switch_measure, fragmentSwitchMeasure, "tagMeasureType")
-            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
 
             fragmentManager.setFragmentResultListener("tagMeasureType", fragmentSwitchMeasure) { _, bundle ->

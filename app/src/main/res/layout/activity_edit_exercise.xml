@@ -16,7 +16,7 @@
         <TextView
             style="@style/h2"
             android:layout_marginTop="24dp"
-            android:text="Name"/>
+            android:text="@string/name"/>
 
         <EditText
             android:id="@+id/name"
@@ -36,7 +36,7 @@
         <TextView
             style="@style/h2"
             android:layout_marginTop="24dp"
-            android:text="Description"/>
+            android:text="@string/description"/>
 
         <EditText
             android:id="@+id/description"
@@ -61,7 +61,7 @@
         <TextView
             style="@style/h2"
             android:layout_marginTop="24dp"
-            android:text="Muscles"/>
+            android:text="@string/muscles"/>
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/checkbox_muscles"
@@ -73,7 +73,7 @@
         <TextView
             style="@style/h2"
             android:layout_marginTop="24dp"
-            android:text="Equipment"/>
+            android:text="@string/equipment"/>
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/checkbox_equipment"
@@ -89,7 +89,7 @@
                 android:id="@+id/save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="SAVE"
+                android:text="@string/save"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

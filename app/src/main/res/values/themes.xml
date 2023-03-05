@@ -7,7 +7,7 @@
         <item name="colorSecondary">@color/mint</item>
         <item name="colorSecondaryVariant">@color/mint</item>
         <item name="colorOnSecondary">@color/dark</item>
-        <item name="android:statusBarColor" tools:targetApi="l">@color/mint</item>
+        <item name="android:statusBarColor" >@color/mint</item>
         <item name="myBackgroundColor">@color/dark</item>
         <item name="myBackgroundColorDarker">@color/darkD</item>
         <item name="myBackgroundColorLighter">@color/darkL</item>
@@ -23,7 +23,7 @@
         <item name="colorSecondary">@color/mint</item>
         <item name="colorSecondaryVariant">@color/mint</item>
         <item name="colorOnSecondary">@color/light</item>
-        <item name="android:statusBarColor" tools:targetApi="l">@color/mint</item>
+        <item name="android:statusBarColor" >@color/mint</item>
         <item name="myBackgroundColor">@color/light</item>
         <item name="myBackgroundColorDarker">@color/lightD</item>
         <item name="myBackgroundColorLighter">@color/lightL</item>
@@ -56,7 +56,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="colorPrimaryDark">@android:color/transparent</item>
-        <item name="android:statusBarColor" tools:targetApi="l">@android:color/transparent</item>
+        <item name="android:statusBarColor" >@android:color/transparent</item>
     </style>
     <style name="Theme.TrainingTracker.Light.Transparent" parent="Theme.TrainingTracker.Light.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
@@ -65,7 +65,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="colorPrimaryDark">@android:color/transparent</item>
-        <item name="android:statusBarColor" tools:targetApi="l">@android:color/transparent</item>
+        <item name="android:statusBarColor" >@android:color/transparent</item>
     </style>
 
     <style name="Popup" parent="Theme.AppCompat.Light.Dialog.Alert">

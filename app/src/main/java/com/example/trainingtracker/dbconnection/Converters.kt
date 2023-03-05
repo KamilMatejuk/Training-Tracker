@@ -1,12 +1,10 @@
 package com.example.trainingtracker.dbconnection
 
-import android.util.Log
 import androidx.room.TypeConverter
 import com.example.trainingtracker.dbconnection.items.Equipment
 import com.example.trainingtracker.dbconnection.items.Muscle
 import com.example.trainingtracker.dbconnection.items.SerieItem
 import com.google.gson.Gson
-import java.sql.Date
 import java.time.LocalDate
 import java.time.LocalDateTime
 

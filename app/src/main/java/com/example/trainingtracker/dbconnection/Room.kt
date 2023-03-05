@@ -4,9 +4,7 @@ import android.content.Context
 import androidx.room.*
 import androidx.room.Room
 import com.example.trainingtracker.dbconnection.items.*
-import java.sql.Date
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 
 @Database(entities = [

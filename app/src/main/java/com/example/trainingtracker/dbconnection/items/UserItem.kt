@@ -3,7 +3,6 @@ package com.example.trainingtracker.dbconnection.items
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.sql.Date
 import java.time.LocalDate
 
 /**

@@ -2,8 +2,6 @@ package com.example.trainingtracker
 
 import android.content.Context
 import android.util.TypedValue
-import android.widget.Button
-import androidx.core.content.ContextCompat
 import com.example.trainingtracker.dbconnection.items.HistoryItem
 
 object Tools {

@@ -4,6 +4,19 @@
 
     <string name="choose_exercise_from_training_plan">Choose exercise from training plan</string>
     <string name="search_for_exercise">Search for exercise</string>
-    <string name="search">Search...</string>
+    <string name="search">Search</string>
     <string name="your_profile">Your profile</string>
+    <string name="mark_as_warmup">Mark as warmup</string>
+    <string name="weight_kg">Weight [kg]</string>
+    <string name="time_s">Time [s]</string>
+    <string name="reps">Reps</string>
+    <string name="save">SAVE</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="muscles">Muscles</string>
+    <string name="equipment">Equipment</string>
+    <string name="frequency">Frequency</string>
+    <string name="volume">Volume</string>
+    <string name="username">Username</string>
+    <string name="height_m">Height [m]</string>
 </resources>

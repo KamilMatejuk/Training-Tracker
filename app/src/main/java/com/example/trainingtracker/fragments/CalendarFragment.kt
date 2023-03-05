@@ -133,14 +133,4 @@ class CalendarFragment : Fragment() {
             binding.calendar.addView(tableRow)
         }
     }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() =
-            CalendarFragment().apply {
-                arguments = Bundle().apply {
-
-                }
-            }
-    }
 }

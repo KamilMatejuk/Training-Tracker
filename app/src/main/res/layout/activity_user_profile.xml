@@ -21,7 +21,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:text="Username"
+            android:text="@string/username"
             android:textColor="?attr/myForegroundColor"
             android:textSize="16sp"/>
 
@@ -65,7 +65,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:text="Height [m]"
+            android:text="@string/height_m"
             android:textColor="?attr/myForegroundColor"
             android:textSize="16sp"/>
 

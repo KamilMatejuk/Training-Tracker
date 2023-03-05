@@ -2,7 +2,6 @@ package com.example.trainingtracker.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.trainingtracker.R
@@ -11,7 +10,9 @@ import com.example.trainingtracker.dbconnection.Room
 import com.example.trainingtracker.dbconnection.items.Equipment
 import com.example.trainingtracker.dbconnection.items.ExerciseItem
 import com.example.trainingtracker.dbconnection.items.Muscle
-import com.example.trainingtracker.fragments.*
+import com.example.trainingtracker.fragments.CheckboxOptionsFragment
+import com.example.trainingtracker.fragments.OptionEquipment
+import com.example.trainingtracker.fragments.OptionMuscle
 
 class EditExerciseActivity : ThemeChangingActivity() {
     private lateinit var binding: ActivityEditExerciseBinding
@@ -37,8 +38,8 @@ class EditExerciseActivity : ThemeChangingActivity() {
             val fragmentCheckboxEquipment = CheckboxOptionsFragment.newInstance("tagEquipment", enumValues<OptionEquipment>())
             fragmentTransaction.replace(R.id.checkbox_muscles, fragmentCheckboxMuscle, "tagMuscles")
             fragmentTransaction.replace(R.id.checkbox_equipment, fragmentCheckboxEquipment, "tagEquipment")
-            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
             fragmentManager.setFragmentResultListener("tagMuscles", fragmentCheckboxMuscle) { _, bundle ->
                 selectedMuscles = (bundle.getSerializable("key") as List<OptionMuscle>).map { when (it) {

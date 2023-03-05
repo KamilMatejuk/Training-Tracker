@@ -51,8 +51,8 @@ class AddSerieActivity : ThemeChangingActivity() {
             val fragmentSwitchMeasure = SwitchOptionsFragment.newInstance("tagMeasureType", enumValues<OptionMeasureType>())
             fragmentTransaction.replace(R.id.switch_weight, fragmentSwitchWeight, "tagWeightType")
             fragmentTransaction.replace(R.id.switch_measure, fragmentSwitchMeasure, "tagMeasureType")
-            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
 
             fragmentManager.setFragmentResultListener("tagWeightType", fragmentSwitchWeight) { _, bundle ->

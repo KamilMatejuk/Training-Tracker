@@ -6,7 +6,7 @@
     tools:context=".fragments.SwitchOptionsFragment"
     android:id="@+id/layout"
     android:orientation="horizontal"
-    android:background="@drawable/border_cornered"
+    android:background="@drawable/border_corner"
     android:padding="1dp">
 
 </LinearLayout>
