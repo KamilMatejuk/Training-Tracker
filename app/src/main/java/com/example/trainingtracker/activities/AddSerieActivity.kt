@@ -63,6 +63,7 @@ class AddSerieActivity : ThemeChangingActivity() {
                 when (result) {
                     OptionWeightType.FREEWEIGHT -> {
                         binding.weight.isEnabled = true
+                        binding.weight.visibility = View.VISIBLE
                         binding.weightTv.text = "Weight [kg]"
                     }
                     OptionWeightType.BODYWEIGHT -> {
@@ -73,6 +74,7 @@ class AddSerieActivity : ThemeChangingActivity() {
                             binding.weightTv.text = "Body weight [$bodyWeight kg]"
                         }
                         binding.weight.isEnabled = false
+                        binding.weight.visibility = View.INVISIBLE
                         binding.weight.setText("")
                     }
                     OptionWeightType.WEIGHTED_BODYWEIGHT -> {
@@ -82,6 +84,7 @@ class AddSerieActivity : ThemeChangingActivity() {
                         } else {
                             binding.weightTv.text = "Body weight [$bodyWeight kg] + weight [kg]"
                             binding.weight.isEnabled = true
+                            binding.weight.visibility = View.VISIBLE
                         }
                     }
                 }
@@ -142,7 +145,10 @@ class AddSerieActivity : ThemeChangingActivity() {
             return
         }
         try {
-            val weight = binding.weight.text.toString().toFloat()
+            val weight = binding.weight.text.toString().toFloatOrNull() ?: 0f
+            if (weightType != OptionWeightType.BODYWEIGHT && weight <= 0) {
+                throw RuntimeException("Weight is below zero")
+            }
             val time = if (measureType == OptionMeasureType.TIME) floor(
                 binding.time.text.toString().toDouble()
             ).toInt() else null
