@@ -37,6 +37,9 @@ interface DAO {
     @Query("SELECT * FROM exerciseitem WHERE id = :exercise_id")
     fun getExerciseData(exercise_id: Int): ExerciseItem
 
+    @Query("UPDATE exerciseitem SET favourite = :favourite WHERE id = :exercise_id")
+    fun setExerciseFavourite(exercise_id: Int, favourite: Boolean)
+
     @Query("SELECT * FROM historyitem WHERE exercise_id = :exercise_id")
     fun getExerciseHistory(exercise_id: Int): List<HistoryItem>
     @Insert fun insertHistoryItem(item: HistoryItem)

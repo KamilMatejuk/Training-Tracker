@@ -50,6 +50,18 @@
                     android:textStyle="bold"
                     android:padding="8dp" />
 
+                <ImageButton
+                    android:id="@+id/favourite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/star_off"
+                    android:tag="off"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:background="@android:color/transparent"
+                    android:padding="16dp"
+                    android:contentDescription="@string/img_desc" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
             <TextView
                 style="@style/h2"

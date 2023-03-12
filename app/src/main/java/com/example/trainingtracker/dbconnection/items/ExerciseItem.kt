@@ -20,6 +20,7 @@ data class ExerciseItem(
     @ColumnInfo(name = "video_link") var video_link: String,
     @ColumnInfo(name = "muscles") var muscles: List<Muscle>,
     @ColumnInfo(name = "equipment") var equipment: List<Equipment>,
+    @ColumnInfo(name = "favourite") var favourite: Boolean = false,
 ): Serializable
 
 enum class Muscle {

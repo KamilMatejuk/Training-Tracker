@@ -1,9 +1,14 @@
 package com.example.trainingtracker.activities
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trainingtracker.adapters.SearchExerciseAdapter
@@ -18,6 +23,7 @@ class SearchExerciseActivity : ThemeChangingActivity() {
     private lateinit var binding: ActivitySearchExerciseBinding
     private lateinit var allExercises: List<ExerciseItem>
     private lateinit var searchedExercises: MutableList<ExerciseItem>
+    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +31,12 @@ class SearchExerciseActivity : ThemeChangingActivity() {
         binding = ActivitySearchExerciseBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                loadExercises()
+            }
+        }
 
         loadExercises()
 
@@ -43,7 +55,7 @@ class SearchExerciseActivity : ThemeChangingActivity() {
                 if (searchedExercises.isNotEmpty()) {
                     this@SearchExerciseActivity.runOnUiThread {
                         binding.recyclerView.adapter = SearchExerciseAdapter(
-                            searchedExercises, this, "")
+                            favouriteFirst(searchedExercises), this, "", resultLauncher)
                         val dividerItemDecoration = DividerItemDecoration(
                             binding.recyclerView.context,
                             RecyclerView.VERTICAL
@@ -60,8 +72,18 @@ class SearchExerciseActivity : ThemeChangingActivity() {
         searchedExercises.clear()
         if (search.isNotEmpty()) searchedExercises.add(
             ExerciseItem(-1, search, "", "", listOf(), listOf()))
-        searchedExercises.addAll(allExercises.filter { it.name.lowercase(Locale.getDefault()).contains(search.lowercase(Locale.getDefault())) })
+        searchedExercises.addAll(favouriteFirst(onlyMatching(allExercises.toMutableList(), search)))
         binding.recyclerView.adapter = SearchExerciseAdapter(
-            searchedExercises, this, search)
+            searchedExercises, this, search, resultLauncher)
+    }
+
+    private fun favouriteFirst(lst: MutableList<ExerciseItem>): MutableList<ExerciseItem> {
+        return (lst.filter { it.favourite } + lst.filter { !it.favourite }).toMutableList()
+    }
+
+    private fun onlyMatching(lst: MutableList<ExerciseItem>, search: String): MutableList<ExerciseItem> {
+        return lst.filter {
+            it.name.lowercase(Locale.getDefault()).contains(search.lowercase(Locale.getDefault()))
+        }.toMutableList()
     }
 }

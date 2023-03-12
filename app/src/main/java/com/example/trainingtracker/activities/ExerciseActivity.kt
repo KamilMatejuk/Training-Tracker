@@ -3,11 +3,13 @@ package com.example.trainingtracker.activities
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.trainingtracker.R
@@ -59,10 +61,20 @@ class ExerciseActivity : ThemeChangingActivity() {
 
         val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                Log.d("RELOAD", "reloading")
                 loadExerciseHistory()
             }
-            Log.d("RELOAD", "not reloading")
+        }
+
+        binding.favourite.setOnClickListener {
+            Thread {
+                run {
+                    val isOn = binding.favourite.tag == "on"
+                    Log.d("STAR", isOn.toString())
+                    Room.setExerciseFavourite(exercise.id!!, !isOn)
+                    binding.favourite.setImageResource(if (isOn) R.drawable.star_off else R.drawable.star_on)
+                    binding.favourite.tag = if (isOn) "off" else "on"
+                }
+            }.start()
         }
 
         binding.add.setOnClickListener {
@@ -76,6 +88,7 @@ class ExerciseActivity : ThemeChangingActivity() {
     }
 
     override fun onBackPressed() {
+        setResult(Activity.RESULT_OK)
         finish()
     }
 
@@ -87,6 +100,9 @@ class ExerciseActivity : ThemeChangingActivity() {
                 binding.description.text = data?.description
                 binding.muscles.text = data?.muscles?.joinToString(", ") { it.toString() }
                 binding.equipment.text = data?.equipment?.joinToString(", ") { it.toString() }
+                binding.favourite.setImageResource(
+                    if (data?.favourite == true) R.drawable.star_on else R.drawable.star_off)
+                binding.favourite.tag = if (data?.favourite == true) "on" else "off"
             }
         }.start()
     }

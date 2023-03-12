@@ -57,6 +57,7 @@ object Room {
     fun getAllExerciseItems(): List<ExerciseItem> = db.getAllExerciseItems()
     fun getExercise(exercise_id: Int): ExerciseItem = db.getExerciseData(exercise_id)
     fun addExercise(item: ExerciseItem) = db.insertExerciseItem(item)
+    fun setExerciseFavourite(exercise_id: Int, favourite: Boolean) = db.setExerciseFavourite(exercise_id, favourite)
     fun getExerciseHistory(exercise_id: Int): List<HistoryItem> = db.getExerciseHistory(exercise_id)
     fun getUser(): UserItem? = db.getAllUserItems().firstOrNull()
     fun addUser(item: UserItem) {
