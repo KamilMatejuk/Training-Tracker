@@ -166,7 +166,8 @@ class AddSerieActivity : ThemeChangingActivity() {
             val now = LocalDateTime.now()
             Thread {
                 run {
-                    if (history.id != null && history.date.until(now, ChronoUnit.MINUTES) < 15) {
+                    // if exercise started less then 2h ago
+                    if (history.id != null && history.date.until(now, ChronoUnit.MINUTES) < 120) {
                         // add to existing
                         history.series = (history.series.toMutableList() + item).toList()
                         Room.updateHistoryItemSeries(history)
