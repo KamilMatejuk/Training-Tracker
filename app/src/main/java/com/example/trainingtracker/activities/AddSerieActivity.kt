@@ -10,11 +10,9 @@ import androidx.fragment.app.FragmentTransaction
 import com.example.trainingtracker.R
 import com.example.trainingtracker.databinding.ActivityAddSerieBinding
 import com.example.trainingtracker.dbconnection.Room
-import com.example.trainingtracker.dbconnection.items.ExerciseItem
-import com.example.trainingtracker.dbconnection.items.HistoryItem
-import com.example.trainingtracker.dbconnection.items.SerieItem
-import com.example.trainingtracker.dbconnection.items.WeightType
+import com.example.trainingtracker.dbconnection.items.*
 import com.example.trainingtracker.fragments.OptionMeasureType
+import com.example.trainingtracker.fragments.OptionSex
 import com.example.trainingtracker.fragments.SwitchOptionsFragment
 import com.example.trainingtracker.fragments.OptionWeightType
 import java.time.LocalDate
@@ -27,6 +25,8 @@ class AddSerieActivity : ThemeChangingActivity() {
     private lateinit var binding: ActivityAddSerieBinding
     private lateinit var exercise: ExerciseItem
     private lateinit var history: HistoryItem
+    private lateinit var fragmentSwitchWeight: SwitchOptionsFragment<OptionWeightType>
+    private lateinit var fragmentSwitchMeasure: SwitchOptionsFragment<OptionMeasureType>
     private var bodyWeight: Float = 0f
 
     private var measureType: OptionMeasureType = OptionMeasureType.REPS
@@ -43,14 +43,12 @@ class AddSerieActivity : ThemeChangingActivity() {
         exercise = (intent.getSerializableExtra("EXTRA_EXERCISE") as? ExerciseItem)!!
 
         binding.save.setOnClickListener { save() }
-        getBodyWeight()
-        getLastHistoryItem()
 
         if (savedInstanceState == null) {
             val fragmentManager: FragmentManager = supportFragmentManager
             val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-            val fragmentSwitchWeight = SwitchOptionsFragment.newInstance("tagWeightType", enumValues<OptionWeightType>())
-            val fragmentSwitchMeasure = SwitchOptionsFragment.newInstance("tagMeasureType", enumValues<OptionMeasureType>())
+            fragmentSwitchWeight = SwitchOptionsFragment.newInstance("tagWeightType", enumValues<OptionWeightType>())
+            fragmentSwitchMeasure = SwitchOptionsFragment.newInstance("tagMeasureType", enumValues<OptionMeasureType>())
             fragmentTransaction.replace(R.id.switch_weight, fragmentSwitchWeight, "tagWeightType")
             fragmentTransaction.replace(R.id.switch_measure, fragmentSwitchMeasure, "tagMeasureType")
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
@@ -107,6 +105,9 @@ class AddSerieActivity : ThemeChangingActivity() {
             binding.repsLayout.visibility = View.VISIBLE
             binding.timeLayout.visibility = View.GONE
         }
+
+        getBodyWeight()
+        getLastHistoryItem()
     }
 
     override fun onBackPressed() {
@@ -134,6 +135,34 @@ class AddSerieActivity : ThemeChangingActivity() {
                 } catch (ex: NoSuchElementException) {
                     HistoryItem(null, exercise.id!!, LocalDateTime.now(), "", listOf())
                 }
+
+                if (history.series.isNotEmpty()) {
+                    val last = history.series.last()
+                    weightType = when(last.weight_type){
+                        WeightType.FREEWEIGHT -> OptionWeightType.FREEWEIGHT
+                        WeightType.BODYWEIGHT -> OptionWeightType.BODYWEIGHT
+                        WeightType.WEIGHTED_BODYWEIGHT -> OptionWeightType.WEIGHTED_BODYWEIGHT
+                    }
+                    measureType = if (last.reps != null) OptionMeasureType.REPS else OptionMeasureType.TIME
+                    if (last.weight_type != WeightType.BODYWEIGHT) {
+                        binding.weight.setText((last.weight ?: "").toString())
+                    } else {
+                        binding.weight.visibility = View.INVISIBLE
+                    }
+                    binding.reps.setText((last.reps ?: "").toString())
+                    binding.time.setText((last.time ?: "").toString())
+                    if (this::fragmentSwitchWeight.isInitialized) {
+                        fragmentSwitchWeight.switchBtnOn(this,
+                            when (last.weight_type) {
+                                WeightType.FREEWEIGHT -> 0
+                                WeightType.BODYWEIGHT -> 1
+                                WeightType.WEIGHTED_BODYWEIGHT -> 2 })
+                    }
+                    if (this::fragmentSwitchMeasure.isInitialized) {
+                        fragmentSwitchMeasure.switchBtnOn(this,
+                            if (last.reps != null) 0 else 1)
+                    }
+                }
             }
         }.start()
     }
@@ -147,7 +176,7 @@ class AddSerieActivity : ThemeChangingActivity() {
         try {
             val weight = binding.weight.text.toString().toFloatOrNull() ?: 0f
             if (weightType != OptionWeightType.BODYWEIGHT && weight <= 0) {
-                throw RuntimeException("Weight is below zero")
+                throw NumberFormatException("Weight is below zero")
             }
             val time = if (measureType == OptionMeasureType.TIME) floor(
                 binding.time.text.toString().toDouble()
