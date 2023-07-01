@@ -71,7 +71,7 @@ class SearchExerciseActivity : ThemeChangingActivity() {
     private fun updateSearch(search: String){
         searchedExercises.clear()
         if (search.isNotEmpty()) searchedExercises.add(
-            ExerciseItem(-1, search, "", "", listOf(), listOf()))
+            ExerciseItem(-1, search, "", "", listOf(), "", listOf(), listOf()))
         searchedExercises.addAll(favouriteFirst(onlyMatching(allExercises.toMutableList(), search)))
         binding.recyclerView.adapter = SearchExerciseAdapter(
             searchedExercises, this, search, resultLauncher)

@@ -129,11 +129,11 @@ class AddSerieActivity : ThemeChangingActivity() {
             run {
                 history = try {
                     (exercise.id?.let { Room.getExerciseHistory(it) } ?: listOf())
-                        .sortedBy { it.date }
+                        .sortedBy { it.date_latest_update }
                         .reversed()
                         .first()
                 } catch (ex: NoSuchElementException) {
-                    HistoryItem(null, exercise.id!!, LocalDateTime.now(), "", listOf())
+                    HistoryItem(null, exercise.id!!, LocalDateTime.now(), LocalDateTime.now(), "", listOf())
                 }
 
                 if (history.series.isNotEmpty()) {
@@ -195,14 +195,15 @@ class AddSerieActivity : ThemeChangingActivity() {
             val now = LocalDateTime.now()
             Thread {
                 run {
-                    // if exercise started less then 2h ago
-                    if (history.id != null && history.date.until(now, ChronoUnit.MINUTES) < 120) {
+                    // if exercise last updated less then 30 min ago
+                    if (history.id != null && history.date_latest_update.until(now, ChronoUnit.MINUTES) < 30) {
                         // add to existing
                         history.series = (history.series.toMutableList() + item).toList()
+                        history.date_latest_update = LocalDateTime.now()
                         Room.updateHistoryItemSeries(history)
                     } else {
                         // create new
-                        val hi = HistoryItem(null, exercise.id!!, now, "", listOf(item))
+                        val hi = HistoryItem(null, exercise.id!!, now, now, "", listOf(item))
                         Room.addHistoryItem(hi)
                     }
                     setResult(Activity.RESULT_OK)

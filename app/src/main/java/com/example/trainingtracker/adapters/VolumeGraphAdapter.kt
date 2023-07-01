@@ -37,12 +37,12 @@ class VolumeGraphAdapter(
 
         @SuppressLint("SetTextI18n")
         fun bind(item: HistoryItem) {
-            v.findViewById<TextView>(R.id.date).text = item.date.format(DateTimeFormatter.ofPattern("dd.MM"))
+            v.findViewById<TextView>(R.id.date).text = item.date_start.format(DateTimeFormatter.ofPattern("dd.MM"))
             v.findViewById<ImageView>(R.id.img).setImageBitmap(getGraphImg(item))
             v.setOnClickListener {
                 // todo show popup with more data
-                val date = item.date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
-                val bw = getBodyWeight(item.date.toLocalDate())
+                val date = item.date_start.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+                val bw = getBodyWeight(item.date_start.toLocalDate())
                 val series = item.series.map {
                     if (it.weight == null) return@map ""
                     val weight = when (it.weight_type) {

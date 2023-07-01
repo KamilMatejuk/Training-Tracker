@@ -9,6 +9,8 @@ import java.io.Serializable
  * @param name name of the exercise
  * @param description description with how it looks
  * @param video_link video with how it looks
+ * @param images_link images with how it looks
+ * @param source_link link to source information
  * @param muscles list of active muscles' name
  * @param equipment list of necessary equipment
  */
@@ -18,18 +20,23 @@ data class ExerciseItem(
     @ColumnInfo(name = "name") var name: String,
     @ColumnInfo(name = "description") var description: String,
     @ColumnInfo(name = "video_link") var video_link: String,
+    @ColumnInfo(name = "images_link") var images_link: List<String>,
+    @ColumnInfo(name = "source_link") var source_link: String,
     @ColumnInfo(name = "muscles") var muscles: List<Muscle>,
     @ColumnInfo(name = "equipment") var equipment: List<Equipment>,
     @ColumnInfo(name = "favourite") var favourite: Boolean = false,
 ): Serializable
 
 enum class Muscle {
-    LEGS,
+    QUADRICEPS_FEMORIS, // czworogłowy uda
+    BICEPS_FEMORIS, // dwugłowy uda
+    CALVES,
     ABS,
     BACK,
     CHEST,
     SHOULDERS,
-    ARMS
+    BICEPS,
+    TRICEPS,
 }
 
 enum class Equipment {
@@ -40,5 +47,5 @@ enum class Equipment {
     DUMBBELL,
     BARBELL,
     RAISED_PLATFORM,
-    PARALLETS
+    PARALLETS,
 }

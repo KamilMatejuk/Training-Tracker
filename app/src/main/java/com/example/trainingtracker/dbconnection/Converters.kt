@@ -26,6 +26,9 @@ object Converters {
     @TypeConverter @JvmStatic fun listOfFloatToJson(value: List<Float>) = Gson().toJson(value)
     @TypeConverter @JvmStatic fun jsonToListOfFloat(value: String) = Gson().fromJson(value, Array<Float>::class.java).toList()
 
+    @TypeConverter @JvmStatic fun listOfStringToJson(value: List<String>) = Gson().toJson(value)
+    @TypeConverter @JvmStatic fun jsonToListOfString(value: String) = Gson().fromJson(value, Array<String>::class.java).toList()
+
     @TypeConverter @JvmStatic fun listOfDateToJson(value: List<LocalDate>): String = value.joinToString("|") { it.toString() }
     @TypeConverter @JvmStatic fun jsonToListOfDate(value: String): List<LocalDate> = value.split("|").filter { it.isNotEmpty() }.map { LocalDate.parse(it) }
 

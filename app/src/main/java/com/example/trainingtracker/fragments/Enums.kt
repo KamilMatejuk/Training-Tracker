@@ -26,12 +26,15 @@ enum class OptionSex(override val desc: String): OptionEnum<OptionSex> {
 }
 
 enum class OptionMuscle(override val desc: String): OptionEnum<OptionMuscle> {
-    LEGS("Legs"),
+    QUADRICEPS_FEMORIS("Quadriceps femoris"),
+    BICEPS_FEMORIS("Biceps femoris"),
+    CALVES("Calves"),
     ABS("Abs"),
     BACK("Back"),
     CHEST("Chest"),
     SHOULDERS("Shoulders"),
-    ARMS("Arms"),
+    BICEPS("Biceps"),
+    TRICEPS("Triceps"),
 }
 
 enum class OptionEquipment(override val desc: String): OptionEnum<OptionEquipment> {

@@ -43,12 +43,15 @@ class EditExerciseActivity : ThemeChangingActivity() {
             fragmentTransaction.commit()
             fragmentManager.setFragmentResultListener("tagMuscles", fragmentCheckboxMuscle) { _, bundle ->
                 selectedMuscles = (bundle.getSerializable("key") as List<OptionMuscle>).map { when (it) {
-                    OptionMuscle.LEGS -> Muscle.LEGS
+                    OptionMuscle.QUADRICEPS_FEMORIS -> Muscle.QUADRICEPS_FEMORIS
+                    OptionMuscle.BICEPS_FEMORIS -> Muscle.BICEPS_FEMORIS
+                    OptionMuscle.CALVES -> Muscle.CALVES
                     OptionMuscle.ABS -> Muscle.ABS
                     OptionMuscle.BACK -> Muscle.BACK
                     OptionMuscle.CHEST -> Muscle.CHEST
                     OptionMuscle.SHOULDERS -> Muscle.SHOULDERS
-                    OptionMuscle.ARMS -> Muscle.ARMS
+                    OptionMuscle.BICEPS -> Muscle.BICEPS
+                    OptionMuscle.TRICEPS -> Muscle.TRICEPS
                 }}
             }
             fragmentManager.setFragmentResultListener("tagEquipment", fragmentCheckboxEquipment) { _, bundle ->
@@ -77,7 +80,7 @@ class EditExerciseActivity : ThemeChangingActivity() {
                     null,
                     binding.name.text.toString(),
                     binding.description.text.toString(),
-                    "",
+                    "", listOf(""), "",
                     selectedMuscles,
                     selectedEquipment
                 ))

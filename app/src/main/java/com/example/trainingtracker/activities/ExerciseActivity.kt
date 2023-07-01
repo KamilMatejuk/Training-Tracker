@@ -110,7 +110,7 @@ class ExerciseActivity : ThemeChangingActivity() {
     private fun loadExerciseHistory() {
         Thread {
             run {
-                history = (exercise.id?.let { Room.getExerciseHistory(it) } ?: listOf()).sortedBy { it.date }.reversed()
+                history = (exercise.id?.let { Room.getExerciseHistory(it) } ?: listOf()).sortedBy { it.date_latest_update }.reversed()
                 bodyWeight = Room.getUser()?.weight ?: hashMapOf()
                 runOnUiThread {
                     reloadFrequency()
@@ -122,7 +122,7 @@ class ExerciseActivity : ThemeChangingActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun reloadFrequency() {
-        val dates = history.map { LocalDate.of(it.date.year, it.date.month, it.date.dayOfMonth) }
+        val dates = history.map { LocalDate.of(it.date_start.year, it.date_start.month, it.date_start.dayOfMonth) }
         viewModelData.setData(dates)
         val now = LocalDate.now()
         val dates7 = dates.filter { now.minus(Period.ofDays(7)) < it }.size

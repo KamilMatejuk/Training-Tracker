@@ -30,7 +30,7 @@ object Room {
             AppDatabase::class.java, "trainings-database"
         ).build().Dao()
         createDefaultUser()
-        loadExercises()
+        loadExercises(context)
     }
 
     private fun createDefaultUser() {
@@ -38,20 +38,21 @@ object Room {
         db.insertUserItem(UserItem(null, "Username", Sex.MALE, 1.80f, hashMapOf()))
     }
 
-    private fun loadExercises() {
+    private fun loadExercises(context: Context) {
         if (db.getAllExerciseItems().isNotEmpty()) return
-        listOf(
-            ExerciseItem(null, "Wyciskanie na ławeczce poziomej", "", "", listOf(Muscle.CHEST), listOf(Equipment.BENCH, Equipment.BARBELL)),
-            ExerciseItem(null, "Rozpiętki na ławeczce dodatniej", "", "", listOf(Muscle.CHEST, Muscle.SHOULDERS), listOf(Equipment.BENCH, Equipment.BARBELL)),
-            ExerciseItem(null, "Rozpiętki na ławeczce ujemnej", "", "", listOf(Muscle.CHEST), listOf(Equipment.BENCH, Equipment.BARBELL)),
-            ExerciseItem(null, "Dipy", "", "", listOf(Muscle.CHEST, Muscle.ARMS, Muscle.SHOULDERS), listOf(Equipment.PARALLETS)),
-            ExerciseItem(null, "Wyciskanie żołnierskie", "", "", listOf(Muscle.SHOULDERS), listOf(Equipment.BARBELL, Equipment.DUMBBELL)),
-            ExerciseItem(null, "Martwy ciąg", "", "", listOf(Muscle.BACK, Muscle.LEGS), listOf(Equipment.BARBELL)),
-            ExerciseItem(null, "Przysiady", "", "", listOf(Muscle.BACK, Muscle.LEGS), listOf(Equipment.SQUAT_RACK, Equipment.BARBELL)),
-            ExerciseItem(null, "Wzniosy nóg wisząc na drążku", "", "", listOf(Muscle.ABS), listOf(Equipment.PULLUP_BAR)),
-            ExerciseItem(null, "Skręty tułowia", "", "", listOf(Muscle.ABS), listOf(Equipment.MACHINE)),
-            ExerciseItem(null, "Hip thrust", "", "", listOf(Muscle.LEGS), listOf(Equipment.BARBELL, Equipment.RAISED_PLATFORM)),
-        ).forEach { db.insertExerciseItem(it) }
+        CVSManager.loadExercises(context, db)
+//        listOf(
+//            ExerciseItem(null, "Wyciskanie na ławeczce poziomej", "", "", listOf(Muscle.CHEST), listOf(Equipment.BENCH, Equipment.BARBELL)),
+//            ExerciseItem(null, "Rozpiętki na ławeczce dodatniej", "", "", listOf(Muscle.CHEST, Muscle.SHOULDERS), listOf(Equipment.BENCH, Equipment.BARBELL)),
+//            ExerciseItem(null, "Rozpiętki na ławeczce ujemnej", "", "", listOf(Muscle.CHEST), listOf(Equipment.BENCH, Equipment.BARBELL)),
+//            ExerciseItem(null, "Dipy", "", "", listOf(Muscle.CHEST, Muscle.ARMS, Muscle.SHOULDERS), listOf(Equipment.PARALLETS)),
+//            ExerciseItem(null, "Wyciskanie żołnierskie", "", "", listOf(Muscle.SHOULDERS), listOf(Equipment.BARBELL, Equipment.DUMBBELL)),
+//            ExerciseItem(null, "Martwy ciąg", "", "", listOf(Muscle.BACK, Muscle.LEGS), listOf(Equipment.BARBELL)),
+//            ExerciseItem(null, "Przysiady", "", "", listOf(Muscle.BACK, Muscle.LEGS), listOf(Equipment.SQUAT_RACK, Equipment.BARBELL)),
+//            ExerciseItem(null, "Wzniosy nóg wisząc na drążku", "", "", listOf(Muscle.ABS), listOf(Equipment.PULLUP_BAR)),
+//            ExerciseItem(null, "Skręty tułowia", "", "", listOf(Muscle.ABS), listOf(Equipment.MACHINE)),
+//            ExerciseItem(null, "Hip thrust", "", "", listOf(Muscle.LEGS), listOf(Equipment.BARBELL, Equipment.RAISED_PLATFORM)),
+//        ).forEach { db.insertExerciseItem(it) }
     }
 
     fun getAllExerciseItems(): List<ExerciseItem> = db.getAllExerciseItems()
