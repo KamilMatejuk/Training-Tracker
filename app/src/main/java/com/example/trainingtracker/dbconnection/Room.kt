@@ -1,6 +1,9 @@
 package com.example.trainingtracker.dbconnection
 
+import android.app.Activity
 import android.content.Context
+import android.net.Uri
+import android.util.Log
 import androidx.room.*
 import androidx.room.Room
 import com.example.trainingtracker.dbconnection.items.*
@@ -29,30 +32,14 @@ object Room {
         db = Room.databaseBuilder(context,
             AppDatabase::class.java, "trainings-database"
         ).build().Dao()
-        createDefaultUser()
-        loadExercises(context)
-    }
-
-    private fun createDefaultUser() {
-        if (db.getAllUserItems().isNotEmpty()) return
-        db.insertUserItem(UserItem(null, "Username", Sex.MALE, 1.80f, hashMapOf()))
-    }
-
-    private fun loadExercises(context: Context) {
-        if (db.getAllExerciseItems().isNotEmpty()) return
-        CVSManager.loadExercises(context, db)
-//        listOf(
-//            ExerciseItem(null, "Wyciskanie na ławeczce poziomej", "", "", listOf(Muscle.CHEST), listOf(Equipment.BENCH, Equipment.BARBELL)),
-//            ExerciseItem(null, "Rozpiętki na ławeczce dodatniej", "", "", listOf(Muscle.CHEST, Muscle.SHOULDERS), listOf(Equipment.BENCH, Equipment.BARBELL)),
-//            ExerciseItem(null, "Rozpiętki na ławeczce ujemnej", "", "", listOf(Muscle.CHEST), listOf(Equipment.BENCH, Equipment.BARBELL)),
-//            ExerciseItem(null, "Dipy", "", "", listOf(Muscle.CHEST, Muscle.ARMS, Muscle.SHOULDERS), listOf(Equipment.PARALLETS)),
-//            ExerciseItem(null, "Wyciskanie żołnierskie", "", "", listOf(Muscle.SHOULDERS), listOf(Equipment.BARBELL, Equipment.DUMBBELL)),
-//            ExerciseItem(null, "Martwy ciąg", "", "", listOf(Muscle.BACK, Muscle.LEGS), listOf(Equipment.BARBELL)),
-//            ExerciseItem(null, "Przysiady", "", "", listOf(Muscle.BACK, Muscle.LEGS), listOf(Equipment.SQUAT_RACK, Equipment.BARBELL)),
-//            ExerciseItem(null, "Wzniosy nóg wisząc na drążku", "", "", listOf(Muscle.ABS), listOf(Equipment.PULLUP_BAR)),
-//            ExerciseItem(null, "Skręty tułowia", "", "", listOf(Muscle.ABS), listOf(Equipment.MACHINE)),
-//            ExerciseItem(null, "Hip thrust", "", "", listOf(Muscle.LEGS), listOf(Equipment.BARBELL, Equipment.RAISED_PLATFORM)),
-//        ).forEach { db.insertExerciseItem(it) }
+        if (db.getAllExerciseItems().isEmpty()) {
+            Log.d("LOADING", "default")
+            FileManager.load(context, Uri.parse(
+                "android.resource://" +
+                        context.applicationContext.packageName + "/" +
+                        com.example.trainingtracker.R.raw.default_fabrykasily
+            ))
+        }
     }
 
     fun getAllExerciseItems(): List<ExerciseItem> = db.getAllExerciseItems()
@@ -60,6 +47,7 @@ object Room {
     fun addExercise(item: ExerciseItem) = db.insertExerciseItem(item)
     fun setExerciseFavourite(exercise_id: Int, favourite: Boolean) = db.setExerciseFavourite(exercise_id, favourite)
     fun getExerciseHistory(exercise_id: Int): List<HistoryItem> = db.getExerciseHistory(exercise_id)
+    fun getAllHistoryItems(): List<HistoryItem> = db.getAllHistoryItems()
     fun getUser(): UserItem? = db.getAllUserItems().firstOrNull()
     fun addUser(item: UserItem) {
         db.clearUserItems()
@@ -71,4 +59,10 @@ object Room {
     fun updateWeight(user_id: Int, weight: HashMap<LocalDate, Float>) = db.updateWeight(user_id, weight)
     fun addHistoryItem(item: HistoryItem) = db.insertHistoryItem(item)
     fun updateHistoryItemSeries(item: HistoryItem) = db.updateHistoryItemSeries(item.id!!, item.series)
+
+    fun clearDatabase() {
+        db.clearUserItems()
+        db.clearHistoryItems()
+        db.clearExerciseItems()
+    }
 }

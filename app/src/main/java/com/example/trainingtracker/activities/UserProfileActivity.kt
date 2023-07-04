@@ -1,9 +1,13 @@
 package com.example.trainingtracker.activities
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.view.Gravity
+import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -11,12 +15,15 @@ import androidx.fragment.app.FragmentTransaction
 import com.example.trainingtracker.R
 import com.example.trainingtracker.Tools
 import com.example.trainingtracker.databinding.ActivityUserProfileBinding
+import com.example.trainingtracker.dbconnection.FileManager
 import com.example.trainingtracker.dbconnection.Room
 import com.example.trainingtracker.dbconnection.items.Sex
 import com.example.trainingtracker.dbconnection.items.UserItem
-import com.example.trainingtracker.fragments.SwitchOptionsFragment
 import com.example.trainingtracker.fragments.OptionSex
+import com.example.trainingtracker.fragments.SwitchOptionsFragment
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class UserProfileActivity : ThemeChangingActivity() {
@@ -24,6 +31,11 @@ class UserProfileActivity : ThemeChangingActivity() {
 
     private var user: UserItem? = null
     private var sex: Sex = Sex.MALE
+
+    private val CREATE_FILE = 1
+    private val OPEN_FILE = 2
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,13 +67,15 @@ class UserProfileActivity : ThemeChangingActivity() {
             run {
                 Room.updateUsername(user!!.id!!, binding.username.text.toString())
                 Room.updateSex(user!!.id!!, sex)
-                Room.updateHeight(user!!.id!!, binding.height.text.toString().toFloatOrNull() ?: 0f)
+                Room.updateHeight(user!!.id!!, (binding.height.text.toString().toFloatOrNull() ?: 0f) / 100)
                 runOnUiThread {
                     Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show()
                 }
                 finish()
             }
         }.start()
+
+        resources.openRawResource(R.raw.default_fabrykasily)
     }
 
     @SuppressLint("SetTextI18n")
@@ -80,9 +94,12 @@ class UserProfileActivity : ThemeChangingActivity() {
                     (sexFragment as SwitchOptionsFragment<OptionSex>).switchBtnOn(this,
                         when (user!!.sex) { Sex.MALE -> 0; Sex.FEMALE -> 1 })
                 }
-                binding.username.setText(user?.username)
-                binding.height.setText(user?.height.toString())
-                binding.weight.text = user?.weight?.map { (date, weight) -> "$weight on $date" }?.joinToString("\n")
+                runOnUiThread {
+                    binding.username.setText(user?.username)
+                    binding.height.setText((user?.height?.times(100)?.toInt()).toString())
+                    binding.weight.text = user?.weight?.map { (date, weight) -> "$weight on $date" }
+                        ?.joinToString("\n")
+                }
             }
         }.start()
     }
@@ -112,6 +129,56 @@ class UserProfileActivity : ThemeChangingActivity() {
         }
         builder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
         builder.show()
+    }
+
+    fun clearData(view: View) {
+        Thread {
+            run {
+                Room.clearDatabase()
+                runOnUiThread {
+                    // reload
+                    finish();
+                    overridePendingTransition(0, 0);
+                    startActivity(intent);
+                    overridePendingTransition(0, 0);
+                }
+            }
+        }.start()
+    }
+
+    fun exportData(view: View) {
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "text/csv"
+            val date = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss").format(LocalDateTime.now())
+            putExtra(Intent.EXTRA_TITLE, "dane ${date}.csv")
+        }
+        startActivityForResult(intent, CREATE_FILE)
+    }
+
+    fun importData(view: View) {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "*/*"
+        }
+        startActivityForResult(intent, OPEN_FILE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
+        super.onActivityResult(requestCode, resultCode, resultData)
+        Log.d("ACT RES", "$requestCode $resultCode $resultData")
+        if (resultCode != Activity.RESULT_OK) return
+        Thread {
+            run {
+                Log.d("ACT RES OK", resultData.toString())
+                resultData?.data?.also { uri ->
+                    when (requestCode) {
+                        OPEN_FILE -> FileManager.load(this, uri)
+                        CREATE_FILE -> FileManager.save(this, uri)
+                    }
+                }
+            }
+        }.start()
     }
 
 }

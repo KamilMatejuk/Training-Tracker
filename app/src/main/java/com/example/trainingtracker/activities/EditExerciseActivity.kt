@@ -81,8 +81,8 @@ class EditExerciseActivity : ThemeChangingActivity() {
                     binding.name.text.toString(),
                     binding.description.text.toString(),
                     "", listOf(""), "",
-                    selectedMuscles,
-                    selectedEquipment
+                    if (this::selectedMuscles.isInitialized) selectedMuscles else listOf(),
+                    if (this::selectedEquipment.isInitialized) selectedEquipment else listOf(),
                 ))
                 val intent = Intent(this, ExerciseActivity::class.java)
                 intent.putExtra("EXTRA_EXERCISE", Room.getAllExerciseItems().last())

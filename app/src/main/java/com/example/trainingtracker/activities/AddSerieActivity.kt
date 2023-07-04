@@ -70,10 +70,10 @@ class AddSerieActivity : ThemeChangingActivity() {
                             Toast.makeText(this, "Body weight is not set", Toast.LENGTH_SHORT).show()
                         } else {
                             binding.weightTv.text = "Body weight [$bodyWeight kg]"
+                            binding.weight.isEnabled = false
+                            binding.weight.visibility = View.INVISIBLE
+                            binding.weight.setText("")
                         }
-                        binding.weight.isEnabled = false
-                        binding.weight.visibility = View.INVISIBLE
-                        binding.weight.setText("")
                     }
                     OptionWeightType.WEIGHTED_BODYWEIGHT -> {
                         if (bodyWeight <= 0) {

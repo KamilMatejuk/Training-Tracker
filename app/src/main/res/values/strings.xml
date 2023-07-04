@@ -18,5 +18,5 @@
     <string name="frequency">Frequency</string>
     <string name="volume">Volume</string>
     <string name="username">Username</string>
-    <string name="height_m">Height [m]</string>
+    <string name="height_m">Height [cm]</string>
 </resources>
