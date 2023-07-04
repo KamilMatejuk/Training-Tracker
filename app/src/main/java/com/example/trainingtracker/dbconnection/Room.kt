@@ -56,9 +56,7 @@ object Room {
     fun addHistoryItem(item: HistoryItem) = db.insertHistoryItem(item)
     fun updateHistoryItemSeries(item: HistoryItem) = db.updateHistoryItemSeries(item.id!!, item.series)
 
-    fun clearDatabase() {
-        db.clearUserItems()
-        db.clearHistoryItems()
-        db.clearExerciseItems()
-    }
+    fun clearUser() = addUser(UserItem(null, "", Sex.MALE, 0f, hashMapOf()))
+    fun clearExercise() = db.clearExerciseItems()
+    fun clearHistory() = db.clearHistoryItems()
 }

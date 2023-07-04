@@ -71,6 +71,7 @@
     <style name="Popup" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:background">?attr/myBackgroundColor</item>
         <item name="android:textColor">?attr/myForegroundColor</item>
+        <item name="textColorAlertDialogListItem">?attr/myForegroundColor</item>
         <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
         <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
     </style>

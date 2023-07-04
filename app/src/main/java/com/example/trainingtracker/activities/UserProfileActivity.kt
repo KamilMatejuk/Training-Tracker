@@ -2,6 +2,7 @@ package com.example.trainingtracker.activities
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
@@ -107,7 +108,7 @@ class UserProfileActivity : ThemeChangingActivity() {
     @SuppressLint("SetTextI18n")
     private fun addWeight() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this, R.style.Popup)
-        builder.setTitle("Weight in kg")
+        builder.setTitle("Waga w kg")
         val input = EditText(this)
         input.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL
         input.gravity = Gravity.CENTER
@@ -131,19 +132,30 @@ class UserProfileActivity : ThemeChangingActivity() {
         builder.show()
     }
 
+    fun reload() {
+        runOnUiThread {
+            finish();
+            overridePendingTransition(0, 0);
+            startActivity(intent);
+            overridePendingTransition(0, 0);
+        }
+    }
+
     fun clearData(view: View) {
-        Thread {
-            run {
-                Room.clearDatabase()
-                runOnUiThread {
-                    // reload
-                    finish();
-                    overridePendingTransition(0, 0);
-                    startActivity(intent);
-                    overridePendingTransition(0, 0);
-                }
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this, R.style.Popup)
+        builder.setTitle("Jakie dane chcesz usunąć?")
+
+        builder.setItems(arrayOf("Dane użytkownika", "Dane ćwiczeń", "Plany treningowe", "Historia treningów", "Anuluj")
+        ) { dialog, option ->
+            when (option) {
+                0 -> Thread { run { Room.clearUser(); reload() } }.start()
+                1 -> Thread { run { Room.clearExercise() } }.start()
+                2 -> Thread { run {  } }.start()
+                3 -> Thread { run { Room.clearHistory() } }.start()
+                4 -> dialog.cancel()
             }
-        }.start()
+        }
+        builder.show()
     }
 
     fun exportData(view: View) {
