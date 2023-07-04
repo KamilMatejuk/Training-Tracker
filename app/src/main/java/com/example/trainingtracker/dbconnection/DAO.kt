@@ -33,6 +33,10 @@ interface DAO {
     ****************************************** EXERCISES *******************************************
     ***********************************************************************************************/
     @Query("SELECT * FROM exerciseitem") fun getAllExerciseItems(): List<ExerciseItem>
+    @Query("SELECT * FROM historyitem") fun getAllHistoryItems(): List<HistoryItem>
+    @Query("DELETE FROM exerciseitem") fun clearExerciseItems()
+    @Query("DELETE FROM historyitem") fun clearHistoryItems()
+
     @Insert fun insertExerciseItem(item: ExerciseItem)
     @Query("SELECT * FROM exerciseitem WHERE id = :exercise_id")
     fun getExerciseData(exercise_id: Int): ExerciseItem
