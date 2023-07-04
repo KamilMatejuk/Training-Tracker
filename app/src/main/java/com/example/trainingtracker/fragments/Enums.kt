@@ -5,46 +5,46 @@ interface OptionEnum<T> {
 }
 
 enum class OptionMeasureType(override val desc: String): OptionEnum<OptionMeasureType> {
-    REPS("For reps"),
-    TIME("For time")
+    REPS("Na powtórzenia"),
+    TIME("Na czas")
 }
 
 enum class OptionMeasureType2(override val desc: String): OptionEnum<OptionMeasureType2> {
-    REPS("Show repped"),
-    TIME("Show timed")
+    REPS("Pokaż serie na powtórzenia"),
+    TIME("Pokaż serie na czas")
 }
 
 enum class OptionWeightType(override val desc: String): OptionEnum<OptionWeightType> {
-    FREEWEIGHT("Free\nweight"),
-    BODYWEIGHT("Body\nweight"),
-    WEIGHTED_BODYWEIGHT("Body weight +\nfree weight")
+    FREEWEIGHT("Wolne\nciężary"),
+    BODYWEIGHT("Masa\nciała"),
+    WEIGHTED_BODYWEIGHT("Masa ciała +\nciężar")
 }
 
 enum class OptionSex(override val desc: String): OptionEnum<OptionSex> {
-    MALE("Male"),
-    FEMALE("Female")
+    MALE("Mężczyzna"),
+    FEMALE("Kobieta")
 }
 
 enum class OptionMuscle(override val desc: String): OptionEnum<OptionMuscle> {
-    QUADRICEPS_FEMORIS("Quadriceps femoris"),
-    BICEPS_FEMORIS("Biceps femoris"),
-    CALVES("Calves"),
-    ABS("Abs"),
-    BACK("Back"),
-    CHEST("Chest"),
-    SHOULDERS("Shoulders"),
+    QUADRICEPS_FEMORIS("Czworogłowy uda"),
+    BICEPS_FEMORIS("Dwugłowy uda"),
+    CALVES("Łydki"),
+    ABS("Brzuch"),
+    BACK("Plecy"),
+    CHEST("Klatka"),
+    SHOULDERS("Barki"),
     BICEPS("Biceps"),
     TRICEPS("Triceps"),
 }
 
 enum class OptionEquipment(override val desc: String): OptionEnum<OptionEquipment> {
-    MACHINE("Machine"),
-    PULLUP_BAR("Pullup bar"),
-    SQUAT_RACK("Squat rack"),
-    BENCH("Bench"),
-    DUMBBELL("Dumbell"),
-    BARBELL("Barbell"),
-    RAISED_PLATFORM("Raised platform"),
-    PARALLETS("Parallets")
+    MACHINE("Maszyna"),
+    PULLUP_BAR("Drążek"),
+    SQUAT_RACK("Stojak na sztangę"),
+    BENCH("Łąwka"),
+    DUMBBELL("Hantle"),
+    BARBELL("Sztanga"),
+    RAISED_PLATFORM("Platforma"),
+    PARALLETS("Paraletki")
 }
 

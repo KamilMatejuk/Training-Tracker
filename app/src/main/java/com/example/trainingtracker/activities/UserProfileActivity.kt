@@ -69,7 +69,7 @@ class UserProfileActivity : ThemeChangingActivity() {
                 Room.updateSex(user!!.id!!, sex)
                 Room.updateHeight(user!!.id!!, (binding.height.text.toString().toFloatOrNull() ?: 0f) / 100)
                 runOnUiThread {
-                    Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Zapisano", Toast.LENGTH_SHORT).show()
                 }
                 finish()
             }
@@ -116,7 +116,7 @@ class UserProfileActivity : ThemeChangingActivity() {
         builder.setPositiveButton("OK") { _, _ ->
             val weight = input.text.toString().toFloatOrNull()
             if (weight == null) {
-                Toast.makeText(this, "Couldn't parse ${input.text}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Bląd odczytu wagi: ${input.text}", Toast.LENGTH_SHORT).show()
                 return@setPositiveButton
             }
             user!!.weight[LocalDate.now()] = weight

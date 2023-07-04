@@ -17,7 +17,7 @@ class ChoosePlanOrExerciseActivity : ThemeChangingActivity() {
         setContentView(view)
 
         binding.choosePlan.setOnClickListener {
-            Toast.makeText(this, "Currently not available", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Opcja tymczasowo nie dostępna", Toast.LENGTH_SHORT).show()
         }
 
         binding.chooseExercise.setOnClickListener {

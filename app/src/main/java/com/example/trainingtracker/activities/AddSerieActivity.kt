@@ -67,9 +67,9 @@ class AddSerieActivity : ThemeChangingActivity() {
                     OptionWeightType.BODYWEIGHT -> {
                         if (bodyWeight <= 0) {
                             fragmentSwitchWeight.switchBtnOn(this, 0)
-                            Toast.makeText(this, "Body weight is not set", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "Ustaw swoją wagę w zakładce Mój profil", Toast.LENGTH_SHORT).show()
                         } else {
-                            binding.weightTv.text = "Body weight [$bodyWeight kg]"
+                            binding.weightTv.text = "Masa ciała [$bodyWeight kg]"
                             binding.weight.isEnabled = false
                             binding.weight.visibility = View.INVISIBLE
                             binding.weight.setText("")
@@ -78,9 +78,9 @@ class AddSerieActivity : ThemeChangingActivity() {
                     OptionWeightType.WEIGHTED_BODYWEIGHT -> {
                         if (bodyWeight <= 0) {
                             fragmentSwitchWeight.switchBtnOn(this, 0)
-                            Toast.makeText(this, "Body weight is not set", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "Ustaw swoją wagę w zakładce Mój profil", Toast.LENGTH_SHORT).show()
                         } else {
-                            binding.weightTv.text = "Body weight [$bodyWeight kg] + weight [kg]"
+                            binding.weightTv.text = "Masa ciała [$bodyWeight kg] + ciężar [kg]"
                             binding.weight.isEnabled = true
                             binding.weight.visibility = View.VISIBLE
                         }
@@ -169,7 +169,7 @@ class AddSerieActivity : ThemeChangingActivity() {
 
     private fun save() {
         if (!this::history.isInitialized || !this::exercise.isInitialized) {
-            Toast.makeText(this, "Failed saving", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Błąd zapisu", Toast.LENGTH_SHORT).show()
             finish()
             return
         }
@@ -211,7 +211,7 @@ class AddSerieActivity : ThemeChangingActivity() {
                 }
             }.start()
         } catch (ex: NumberFormatException){
-            Toast.makeText(this, "Fill all required fields", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Uzupełnij wszystkie wymagane pola", Toast.LENGTH_SHORT).show()
         }
     }
 }

@@ -98,8 +98,8 @@ class ExerciseActivity : ThemeChangingActivity() {
                 val data = exercise.id?.let { Room.getExercise(it) }
                 binding.name.text = data?.name
                 binding.description.text = data?.description
-                binding.muscles.text = data?.muscles?.joinToString(", ") { it.toString() }
-                binding.equipment.text = data?.equipment?.joinToString(", ") { it.toString() }
+                binding.muscles.text = data?.muscles?.joinToString(", ") { OptionMuscle.valueOf(it.name).desc }
+                binding.equipment.text = data?.equipment?.joinToString(", ") { OptionEquipment.valueOf(it.name).desc }
                 binding.favourite.setImageResource(
                     if (data?.favourite == true) R.drawable.star_on else R.drawable.star_off)
                 binding.favourite.tag = if (data?.favourite == true) "on" else "off"
@@ -159,8 +159,8 @@ class ExerciseActivity : ThemeChangingActivity() {
             OptionMeasureType2.REPS -> {
                 binding.oneRepMaxLast1.visibility = View.VISIBLE
                 binding.oneRepMaxLast5.visibility = View.VISIBLE
-                binding.oneRepMaxLast1.text = "Estimated One Rep Max (last training): $oneRepMax1"
-                binding.oneRepMaxLast5.text = "Estimated One Rep Max (last 5 trainings): $oneRepMax5"
+                binding.oneRepMaxLast1.text = "Oszacowany One-Rep-Max (last training): $oneRepMax1"
+                binding.oneRepMaxLast5.text = "Oszacowany One-Rep-Max (last 5 trainings): $oneRepMax5"
             }
             OptionMeasureType2.TIME -> {
                 binding.oneRepMaxLast1.visibility = View.GONE
