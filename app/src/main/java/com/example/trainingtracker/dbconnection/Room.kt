@@ -21,10 +21,6 @@ abstract class AppDatabase : RoomDatabase() {
 
 object Room {
     private lateinit var db: DAO
-
-    // todo - export data to file (csv)
-    // todo - import data from file (csv)
-
     /**
      * Create database instance at the beginning of app lifecycle
      */
