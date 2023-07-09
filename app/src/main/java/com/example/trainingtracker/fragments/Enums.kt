@@ -14,6 +14,11 @@ enum class OptionMeasureType2(override val desc: String): OptionEnum<OptionMeasu
     TIME("Pokaż serie na czas")
 }
 
+enum class OptionTechniqueType(override val desc: String): OptionEnum<OptionTechniqueType> {
+    VIDEO("Pokaż film"),
+    IMAGES("Pokaż zdjęcia")
+}
+
 enum class OptionWeightType(override val desc: String): OptionEnum<OptionWeightType> {
     FREEWEIGHT("Wolne\nciężary"),
     BODYWEIGHT("Masa\nciała"),

@@ -93,12 +93,20 @@
             <TextView
                 style="@style/h2"
                 android:text="@string/technique" />
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/switch_technique"
+                android:name="com.example.trainingtracker.fragments.SwitchOptionsFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout="@layout/fragment_switch_options"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="0dp"/>
             <LinearLayout
                 android:id="@+id/technique"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginBottom="32dp"/>
             <TextView
                 android:id="@+id/frequency"

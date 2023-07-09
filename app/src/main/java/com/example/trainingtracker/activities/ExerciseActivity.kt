@@ -3,7 +3,6 @@ package com.example.trainingtracker.activities
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -37,6 +36,7 @@ class ExerciseActivity : ThemeChangingActivity() {
     private val viewModelData: CalendarDataViewModel by viewModels()
 
     private var measureType: OptionMeasureType2 = OptionMeasureType2.REPS
+    private var techniqueType: OptionTechniqueType = OptionTechniqueType.VIDEO
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,14 +52,20 @@ class ExerciseActivity : ThemeChangingActivity() {
             val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
             val fragmentSwitchMeasure = SwitchOptionsFragment.newInstance("tagMeasureType", enumValues<OptionMeasureType2>())
             fragmentTransaction.replace(R.id.switch_measure, fragmentSwitchMeasure, "tagMeasureType")
+            val fragmentSwitchTechnique = SwitchOptionsFragment.newInstance("tagTechniqueType", enumValues<OptionTechniqueType>())
+            fragmentTransaction.replace(R.id.switch_technique, fragmentSwitchTechnique, "tagTechniqueType")
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
 
             fragmentManager.setFragmentResultListener("tagMeasureType", fragmentSwitchMeasure) { _, bundle ->
-                val result = bundle.getSerializable("key") as OptionMeasureType2
-                measureType = result
+                measureType = bundle.getSerializable("key") as OptionMeasureType2
                 reloadVolume()
+            }
+
+            fragmentManager.setFragmentResultListener("tagTechniqueType", fragmentSwitchTechnique) { _, bundle ->
+                techniqueType = bundle.getSerializable("key") as OptionTechniqueType
+                loadTechnique()
             }
         }
 
@@ -87,6 +93,7 @@ class ExerciseActivity : ThemeChangingActivity() {
             resultLauncher.launch(intent)
         }
 
+        loadTechnique()
         loadExerciseData()
         loadExerciseHistory()
     }
@@ -94,6 +101,43 @@ class ExerciseActivity : ThemeChangingActivity() {
     override fun onBackPressed() {
         setResult(Activity.RESULT_OK)
         finish()
+    }
+
+    private fun loadTechnique() {
+        Thread {
+            run {
+                val data = exercise.id?.let { Room.getExercise(it) }
+                data?.let {
+                    runOnUiThread {
+                        binding.technique.removeAllViews()
+                        when (techniqueType) {
+                            OptionTechniqueType.IMAGES -> {
+                                data.images_link.forEach { link ->
+                                    val iv = ImageView(this)
+                                    binding.technique.addView(iv)
+                                    iv.adjustViewBounds = true
+                                    Picasso.get()
+                                        .load(link)
+                                        .placeholder(R.drawable.placeholder_loading)
+                                        .error(R.drawable.placeholder_error)
+                                        .into(iv)
+                                }
+                            }
+                            OptionTechniqueType.VIDEO -> {
+                                val vv = VideoView(this)
+                                vv.layoutParams = LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                    (resources.displayMetrics.widthPixels * 0.5625).toInt() // 16:9 aspect ratio
+                                )
+                                binding.technique.addView(vv)
+                                vv.setVideoURI(Uri.parse(data.video_link))
+                                vv.start()
+                            }
+                        }
+                    }
+                }
+            }
+        }.start()
     }
 
     private fun loadExerciseData() {
@@ -107,32 +151,8 @@ class ExerciseActivity : ThemeChangingActivity() {
                 binding.favourite.setImageResource(
                     if (data?.favourite == true) R.drawable.star_on else R.drawable.star_off)
                 binding.favourite.tag = if (data?.favourite == true) "on" else "off"
-                data?.let { loadImagesAndVideos(data.images_link, data.video_link) }
             }
         }.start()
-    }
-
-    private fun loadImagesAndVideos(image_links: List<String>, video_link: String) {
-        runOnUiThread {
-            image_links.forEach { link ->
-                val iv = ImageView(this)
-                binding.technique.addView(iv)
-                iv.adjustViewBounds = true
-                Picasso.get()
-                    .load(link)
-                    .placeholder(R.drawable.placeholder_loading)
-                    .error(R.drawable.placeholder_error)
-                    .into(iv)
-            }
-            val vv = VideoView(this)
-            vv.layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                (resources.displayMetrics.widthPixels * 0.5625).toInt() // 16:9 aspect ratio
-            )
-            binding.technique.addView(vv)
-            vv.setVideoURI(Uri.parse(video_link))
-            vv.start()
-        }
     }
 
     private fun loadExerciseHistory() {
