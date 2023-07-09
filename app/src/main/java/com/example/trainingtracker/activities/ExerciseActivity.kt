@@ -3,6 +3,7 @@ package com.example.trainingtracker.activities
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.graphics.drawable.LayerDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,7 @@ import android.widget.LinearLayout
 import android.widget.VideoView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.trainingtracker.R
@@ -21,6 +23,7 @@ import com.example.trainingtracker.databinding.ActivityExerciseBinding
 import com.example.trainingtracker.dbconnection.Room
 import com.example.trainingtracker.dbconnection.items.ExerciseItem
 import com.example.trainingtracker.dbconnection.items.HistoryItem
+import com.example.trainingtracker.dbconnection.items.Muscle
 import com.example.trainingtracker.dbconnection.items.SerieItem
 import com.example.trainingtracker.fragments.*
 import com.squareup.picasso.Picasso
@@ -140,17 +143,37 @@ class ExerciseActivity : ThemeChangingActivity() {
         }.start()
     }
 
+    private fun loadMuscles(muscles: List<Muscle>?) {
+        runOnUiThread {
+            var drawables = arrayOf(ResourcesCompat.getDrawable(resources, R.drawable.muscles_siluette, null))
+            muscles?.map {
+                when (it) {
+                    Muscle.QUADRICEPS_FEMORIS -> R.drawable.muscles_mask_quadriceps_femoris
+                    Muscle.BICEPS_FEMORIS -> R.drawable.muscles_mask_biceps_femoris
+                    Muscle.CALVES -> R.drawable.muscles_mask_calves
+                    Muscle.ABS -> R.drawable.muscles_mask_abs
+                    Muscle.BACK -> R.drawable.muscles_mask_back
+                    Muscle.CHEST -> R.drawable.muscles_mask_chest
+                    Muscle.SHOULDERS -> R.drawable.muscles_mask_shoulders
+                    Muscle.BICEPS -> R.drawable.muscles_mask_biceps
+                    Muscle.TRICEPS -> R.drawable.muscles_mask_triceps
+                }
+            }?.forEach { drawables += ResourcesCompat.getDrawable(resources, it, null) }
+            binding.muscles.setImageDrawable(LayerDrawable(drawables))
+        }
+    }
+
     private fun loadExerciseData() {
         Thread {
             run {
                 val data = exercise.id?.let { Room.getExercise(it) }
                 binding.name.text = data?.name
                 binding.description.text = data?.description
-                binding.muscles.text = data?.muscles?.joinToString(", ") { OptionMuscle.valueOf(it.name).desc }
                 binding.equipment.text = data?.equipment?.joinToString(", ") { OptionEquipment.valueOf(it.name).desc }
                 binding.favourite.setImageResource(
                     if (data?.favourite == true) R.drawable.star_on else R.drawable.star_off)
                 binding.favourite.tag = if (data?.favourite == true) "on" else "off"
+                loadMuscles(data?.muscles)
             }
         }.start()
     }
