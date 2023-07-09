@@ -19,4 +19,5 @@
     <string name="volume">Objętość treningowa</string>
     <string name="username">Imię</string>
     <string name="height_m">Wzrost [cm]</string>
+    <string name="technique">Technika</string>
 </resources>

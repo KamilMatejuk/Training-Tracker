@@ -3,13 +3,16 @@ package com.example.trainingtracker.activities
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.graphics.drawable.Drawable
+import android.media.MediaMetadataRetriever
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.VideoView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.trainingtracker.R
@@ -21,6 +24,7 @@ import com.example.trainingtracker.dbconnection.items.ExerciseItem
 import com.example.trainingtracker.dbconnection.items.HistoryItem
 import com.example.trainingtracker.dbconnection.items.SerieItem
 import com.example.trainingtracker.fragments.*
+import com.squareup.picasso.Picasso
 import java.time.LocalDate
 import java.time.Period
 
@@ -103,8 +107,32 @@ class ExerciseActivity : ThemeChangingActivity() {
                 binding.favourite.setImageResource(
                     if (data?.favourite == true) R.drawable.star_on else R.drawable.star_off)
                 binding.favourite.tag = if (data?.favourite == true) "on" else "off"
+                data?.let { loadImagesAndVideos(data.images_link, data.video_link) }
             }
         }.start()
+    }
+
+    private fun loadImagesAndVideos(image_links: List<String>, video_link: String) {
+        runOnUiThread {
+            image_links.forEach { link ->
+                val iv = ImageView(this)
+                binding.technique.addView(iv)
+                iv.adjustViewBounds = true
+                Picasso.get()
+                    .load(link)
+                    .placeholder(R.drawable.placeholder_loading)
+                    .error(R.drawable.placeholder_error)
+                    .into(iv)
+            }
+            val vv = VideoView(this)
+            vv.layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                (resources.displayMetrics.widthPixels * 0.5625).toInt() // 16:9 aspect ratio
+            )
+            binding.technique.addView(vv)
+            vv.setVideoURI(Uri.parse(video_link))
+            vv.start()
+        }
     }
 
     private fun loadExerciseHistory() {
